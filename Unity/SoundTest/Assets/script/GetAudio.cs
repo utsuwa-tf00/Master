@@ -15,13 +15,17 @@ public class GetAudio : MonoBehaviour
     public static event OnAudioCaptured AudioCaptured;
 
     private float[] audioData;
-    private static float[] _audioSamples; // 静的フィールドを追加
+    private static float[] _audioSamples;
 
     public static float[] audioSamples
     {
         get { return _audioSamples; }
         set { _audioSamples = value; }
     }
+
+    // 追加: サンプル数を指定する変数
+    [Range(128, 8192)]
+    public int sampleCount = 1024;
 
     void Start()
     {
@@ -32,7 +36,8 @@ public class GetAudio : MonoBehaviour
         while (!(Microphone.GetPosition(null) > 0)) { }
         _audio.Play();
 
-        audioData = new float[1024];
+        // サンプル数を指定してオーディオデータ配列を初期化
+        audioData = new float[sampleCount];
 
         if (_audio.clip == null)
         {
@@ -42,17 +47,14 @@ public class GetAudio : MonoBehaviour
 
     void Update()
     {
-        // マイクからオーディオデータを取得
         _audio.GetOutputData(audioData, 0);
 
         loudness = GetAveragedVolume() * sensitivity;
         freq = GetFundamentalFrequency();
         gain = GetMaxVolume();
 
-        // オーディオデータをリスナーに送信する
         AudioCaptured?.Invoke(audioData);
 
-        // 静的フィールドにオーディオデータを格納する
         audioSamples = audioData;
     }
 

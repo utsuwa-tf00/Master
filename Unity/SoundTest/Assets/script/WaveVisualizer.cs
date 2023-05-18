@@ -22,7 +22,10 @@ public class WaveVisualizer : MonoBehaviour
     void Start()
     {
         // Create waveform texture
-        waveformTexture = new Texture2D((int)waveformImage.rectTransform.rect.width, (int)waveformImage.rectTransform.rect.height);
+        float desiredPixelRate = 1f; // 追加: 希望するピクセルレート
+        int textureWidth = (int)(waveformImage.rectTransform.rect.width * desiredPixelRate);
+        int textureHeight = (int)waveformImage.rectTransform.rect.height;
+        waveformTexture = new Texture2D(textureWidth, textureHeight);
         waveformTexture.filterMode = FilterMode.Point;
         waveformTexture.wrapMode = TextureWrapMode.Clamp;
         waveformImage.texture = waveformTexture;
@@ -104,8 +107,8 @@ public class WaveVisualizer : MonoBehaviour
             int yStart = waveformCenter - waveformHeight / 2;
             int yEnd = yStart + waveformHeight;
 
-            // Draw waveform on texture
-            for (int j = yStart; j < yEnd; j++)
+            // Draw waveform on texture with finer resolution
+            for (int j = yStart; j <= yEnd; j++)
             {
                 int index = j * waveformTexture.width + i;
                 waveformColors[index] = waveformColor;
@@ -116,6 +119,8 @@ public class WaveVisualizer : MonoBehaviour
             {
                 int index = (yEnd + j) * waveformTexture.width + i;
                 waveformColors[index] = waveformColor;
+                index = (yStart - j) * waveformTexture.width + i;
+                waveformColors[index] = waveformColor;
             }
         }
 
@@ -123,8 +128,6 @@ public class WaveVisualizer : MonoBehaviour
         waveformTexture.SetPixels(waveformColors);
         waveformTexture.Apply();
     }
-
-
 
     void OnAudioCaptured(float[] audioSamples)
     {
