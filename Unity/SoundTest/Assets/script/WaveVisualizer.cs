@@ -36,6 +36,12 @@ public class WaveVisualizer : MonoBehaviour
 
         // Subscribe to AudioCaptured event
         GetAudio.AudioCaptured += OnAudioCaptured;
+
+        // Set waveformImage to stretch
+        waveformImage.rectTransform.anchorMin = Vector2.zero;
+        waveformImage.rectTransform.anchorMax = Vector2.one;
+        waveformImage.rectTransform.sizeDelta = Vector2.zero;
+        waveformImage.rectTransform.pivot = new Vector2(0.5f, 0.5f);
     }
 
     void Update()
@@ -61,12 +67,22 @@ public class WaveVisualizer : MonoBehaviour
         // Calculate the scroll offset based on scrollSpeed
         scrollOffset += Time.deltaTime * scrollSpeed;
 
+        // Wrap the scroll offset within the sample range
+        scrollOffset %= samples.Length;
+
+        // Calculate the center position of the waveform on the x-axis
+        int centerPixel = waveformTexture.width / 2;
+
         // Draw waveform on texture
         for (int i = 0; i < waveformTexture.width; i++)
         {
             // Calculate start and end sample indices for current pixel
             int startSample = (int)(i * samplesPerPixel + scrollOffset);
             int endSample = (int)((i + 1) * samplesPerPixel + scrollOffset) - 1;
+
+            // Wrap the sample indices within the sample array length
+            startSample %= samples.Length;
+            endSample %= samples.Length;
 
             // Calculate average sample value for current pixel
             float averageSample = 0f;
@@ -82,9 +98,14 @@ public class WaveVisualizer : MonoBehaviour
                 averageSample = 0f;
             }
 
-            // Draw waveform on texture
+            // Calculate the y position of the waveform based on the sample value
             int waveformHeight = Mathf.RoundToInt(averageSample * waveformTexture.height * scaleFactor);
-            for (int j = 0; j < waveformHeight; j++)
+            int waveformCenter = waveformTexture.height / 2;
+            int yStart = waveformCenter - waveformHeight / 2;
+            int yEnd = yStart + waveformHeight;
+
+            // Draw waveform on texture
+            for (int j = yStart; j < yEnd; j++)
             {
                 int index = j * waveformTexture.width + i;
                 waveformColors[index] = waveformColor;
@@ -93,7 +114,7 @@ public class WaveVisualizer : MonoBehaviour
             // Draw waveform thickness
             for (int j = 1; j <= Mathf.CeilToInt(thickness * waveformTexture.height); j++)
             {
-                int index = (waveformHeight + j) * waveformTexture.width + i;
+                int index = (yEnd + j) * waveformTexture.width + i;
                 waveformColors[index] = waveformColor;
             }
         }
@@ -102,6 +123,8 @@ public class WaveVisualizer : MonoBehaviour
         waveformTexture.SetPixels(waveformColors);
         waveformTexture.Apply();
     }
+
+
 
     void OnAudioCaptured(float[] audioSamples)
     {
