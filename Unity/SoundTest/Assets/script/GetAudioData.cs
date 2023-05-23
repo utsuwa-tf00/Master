@@ -7,21 +7,28 @@ public class GetAudioData : MonoBehaviour
     public float frequency = 0f;
     public float[] audioData;
 
+    private int sampleRate;
+    private int bufferSize;
+    private AudioClip microphoneClip;
+
     void Start()
     {
         string deviceName = Microphone.devices[0];
-        Microphone.Start(deviceName, true, 10, AudioSettings.outputSampleRate);
-        audioData = new float[1024];
+        sampleRate = AudioSettings.outputSampleRate;
+        bufferSize = 1024;
+        audioData = new float[bufferSize];
+
+        microphoneClip = Microphone.Start(deviceName, true, 10, sampleRate);
     }
 
     void Update()
     {
-        Microphone.GetPosition(null, out int position);
-        int offset = position - audioData.Length + 1;
+        int position = Microphone.GetPosition(null);
+        int offset = position - bufferSize + 1;
 
         if (offset >= 0)
         {
-            Microphone.GetRawData(audioData, offset);
+            microphoneClip.GetData(audioData, offset);
 
             // 周波数と音量を取得
             AnalyzeAudioData();
@@ -30,14 +37,8 @@ public class GetAudioData : MonoBehaviour
 
     void AnalyzeAudioData()
     {
-        // サンプリング周波数
-        int sampleRate = AudioSettings.outputSampleRate;
-
-        // FFTを実行するためのバッファサイズ
-        int fftSize = 1024;
-
         // FFTを実行して周波数スペクトルを取得
-        float[] spectrum = new float[fftSize];
+        float[] spectrum = new float[bufferSize];
         FFTWindow window = FFTWindow.BlackmanHarris;
         AudioListener.GetSpectrumData(spectrum, 0, window);
 
@@ -55,7 +56,7 @@ public class GetAudioData : MonoBehaviour
         }
 
         // 最大周波数成分のインデックスから周波数を計算
-        float frequency = maxIndex * sampleRate / (float)fftSize;
+        float frequency = maxIndex * sampleRate / (float)bufferSize;
 
         // ゲインを計算
         float amplitude = GetAveragedVolume() * sensitivity;
