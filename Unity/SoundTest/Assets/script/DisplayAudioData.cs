@@ -5,23 +5,18 @@ public class DisplayAudioData : MonoBehaviour
 {
     public Text loudness;
     public Text freqText;
-    public Text noteText; // 追加: 音階名を表示するテキスト
-    private GetAudio audioSource;
-    private AnalyzePitch pitchAnalyzer; // 追加: AnalyzePitchコンポーネント
+    public Text noteText;
+    private GetAudioData audioSource; // GetAudioDataに変更
 
     void Start()
     {
-        audioSource = GetComponent<GetAudio>();
-        pitchAnalyzer = GetComponent<AnalyzePitch>(); // 追加: AnalyzePitchコンポーネントを取得
+        audioSource = GetComponent<GetAudioData>();
     }
 
     void Update()
     {
         // ゲインと周波数をテキストとして表示
         loudness.text = "Loudness: " + audioSource.loudness.ToString("F2");
-        freqText.text = "Frequency: " + audioSource.freq.ToString("F2") + " Hz";
-
-        // 音階名をテキストとして表示
-        noteText.text = "Note: " + pitchAnalyzer.currentNote;
+        freqText.text = "Frequency: " + audioSource.frequency.ToString("F2") + " Hz";
     }
 }
