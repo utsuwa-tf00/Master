@@ -316,11 +316,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 877615640}
-  - component: {fileID: 877615638}
-  - component: {fileID: 877615637}
-  - component: {fileID: 877615643}
-  - component: {fileID: 877615641}
   - component: {fileID: 877615642}
+  - component: {fileID: 877615641}
+  - component: {fileID: 877615643}
+  - component: {fileID: 877615644}
   m_Layer: 0
   m_Name: ALObject
   m_TagString: Untagged
@@ -328,7 +327,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &877615637
+--- !u!4 &877615640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877615636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &877615641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,12 +354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5c9e352ce06422fa4e5c3b45d2df46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 100
-  loudness: 0
   frequency: 0
-  audioData: []
-  sampleRate: 0
---- !u!82 &877615638
+  loudness: 0
+--- !u!82 &877615642
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -441,52 +452,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!4 &877615640
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877615636}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &877615641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877615636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7260444e63994f2d9a73dbb303c1df2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loudness: {fileID: 1736061200}
-  freqText: {fileID: 418230185}
-  noteText: {fileID: 2075319526}
---- !u!114 &877615642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877615636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ca5146a38dfb48bd8fa160813a7fe5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioData: {fileID: 877615637}
-  graphImage: {fileID: 437712235}
-  graphColor: {r: 0, g: 0, b: 0, a: 1}
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &877615643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,13 +461,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 877615636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d65989cf85b9348d4940aab07cd28137, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c838a9a8ff0e42bb977ec16c5dc54ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioData: {fileID: 877615637}
-  frequencyMultiplier: 100
-  gain: 0.1
-  sampleRate: 44100
+  scale: 
+  noteName: 
+  octave: 0
+--- !u!114 &877615644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877615636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 492b2323a5cb64752963892b3ea19f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioData: {fileID: 877615641}
+  mic: 1
+  score:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1640429208
 MonoBehaviour:
   m_ObjectHideFlags: 0

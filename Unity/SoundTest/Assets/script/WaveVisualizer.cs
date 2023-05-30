@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class WaveVisualizer : MonoBehaviour
 {
+    /*
     public GetAudioData audioData;
     public RawImage graphImage;
     public Color graphColor = Color.black;
@@ -71,4 +72,5 @@ public class WaveVisualizer : MonoBehaviour
             }
         }
     }
+    */
 }

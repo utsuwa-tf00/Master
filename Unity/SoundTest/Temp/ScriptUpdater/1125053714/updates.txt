@@ -1,0 +1,1 @@
+Temp/ScriptUpdater/1125053714/1110219419_GetAudioData.cs => Assets/script/GetAudioData.cs
