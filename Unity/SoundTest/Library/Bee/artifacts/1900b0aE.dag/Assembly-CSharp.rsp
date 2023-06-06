@@ -351,6 +351,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/script/DisplayAudioData.cs"
 "Assets/script/DynamicAudioGeneration.cs"
+"Assets/script/FrequencyLibrary.cs"
 "Assets/script/FrequencyToScaleConverter.cs"
 "Assets/script/GetAudioData.cs"
 "Assets/script/ScoreRecorder.cs"
