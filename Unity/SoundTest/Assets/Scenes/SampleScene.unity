@@ -480,6 +480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioData: {fileID: 877615641}
   mic: 1
+  cutoffVol: 0.025
+  coolTime: 0.25
   score:
   - 
   - 
@@ -511,8 +513,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreRecorder: {fileID: 877615644}
   gain: 0.1
-  sampleRate: 44100
-  noteChangeInterval: 1
+  sampleRate: 48000
+  noteChangeInterval: 0.5
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

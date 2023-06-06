@@ -4,7 +4,7 @@ public class DynamicAudioGeneration : MonoBehaviour
 {
     public ScoreRecorder scoreRecorder;
     public float gain = 0.1f; // ゲイン（音量）の設定
-    public float sampleRate = 44100f; // サンプルレート
+    public float sampleRate = 48000f; // サンプルレート
     public float noteChangeInterval = 1f; // 音の切り替え間隔
 
     private float phase; // sin波の位相
@@ -56,7 +56,8 @@ public class DynamicAudioGeneration : MonoBehaviour
         for (var i = 0; i < data.Length; i = i + channels)
         {
             time = time + increment;
-            data[i] = Mathf.Sin(time) * gain;
+            if (time > -Mathf.PI && time <= 0) data[i] = -1;
+            if (time > 0 && time <= Mathf.PI) data[i] = 1;
             if (channels == 2) data[i + 1] = data[i];
             if (time > 2 * Mathf.PI) time = 0;
         }

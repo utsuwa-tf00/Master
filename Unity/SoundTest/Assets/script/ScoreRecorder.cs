@@ -4,13 +4,15 @@ public class ScoreRecorder : MonoBehaviour
 {
     public GetAudioData audioData; // Reference to the GetAudioData script
     public bool mic = false; // Control variable for microphone input
+    public float cutoffVol = 0.05f;
+    public float coolTime = 0.25f; // Minimum time interval between note assignments
     public string[] score = new string[16]; // Array to store the note names
-
+    
     private string previousScale; // Variable to store the previous scale value
     private AudioClip micAudioClip; // Reference to the microphone audio clip
     private AudioSource audioSource; // Reference to the AudioSource component
-
     private bool dataUpdate = false;
+    private float elapsedTime = 0f; // Elapsed time since the last note assignment
 
     private void Start()
     {
@@ -21,16 +23,17 @@ public class ScoreRecorder : MonoBehaviour
     private void Update()
     {
         DataUpdate();
-        
+
         if (mic && audioData != null && audioData.enabled)
         {
             float frequency = audioData.frequency; // Get the frequency from the GetAudioData script
             string scale = FrequencyToScaleConverter.ConvertHertzToScale(frequency); // Convert frequency to scale (note name)
 
-            if (scale != previousScale && audioData.loudness >= 0.01f)
+            if (scale != previousScale && audioData.loudness >= cutoffVol && elapsedTime >= coolTime)
             {
                 StoreNoteName(scale);
                 previousScale = scale;
+                elapsedTime = 0f;
 
                 if (ArrayIsFull())
                 {
@@ -39,6 +42,8 @@ public class ScoreRecorder : MonoBehaviour
                 }
             }
         }
+
+        elapsedTime += Time.deltaTime;
     }
 
     private void SetMicInput()
@@ -85,12 +90,12 @@ public class ScoreRecorder : MonoBehaviour
             score[i] = string.Empty;
         }
     }
-    
+
     private void DataUpdate()
     {
         if (mic)
         {
-            if(dataUpdate)
+            if (dataUpdate)
             {
                 ResetScore();
                 SetMicInput();
