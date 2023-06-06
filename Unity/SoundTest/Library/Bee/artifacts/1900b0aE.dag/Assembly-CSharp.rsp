@@ -354,6 +354,7 @@
 "Assets/script/FrequencyLibrary.cs"
 "Assets/script/FrequencyToScaleConverter.cs"
 "Assets/script/GetAudioData.cs"
+"Assets/script/ScoreDisplay.cs"
 "Assets/script/ScoreRecorder.cs"
 "Assets/script/SoundLibrary.cs"
 "Assets/script/WaveVisualizer.cs"
