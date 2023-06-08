@@ -10,6 +10,8 @@ public class GetAudioData : MonoBehaviour
     private float[] prevSpectrum;
     private const int SpectrumSize = 1024;
 
+    private AudioSource audioSource; // Added AudioSource reference
+
     void Start()
     {
         if (Microphone.devices.Length == 0)
@@ -20,13 +22,16 @@ public class GetAudioData : MonoBehaviour
         }
 
         // Start recording from the microphone
-        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
         audioSource.clip = Microphone.Start(null, true, 10, AudioSettings.outputSampleRate);
         audioSource.loop = true;
         while (!(Microphone.GetPosition(null) > 0)) { } // Wait until the microphone starts recording
         audioSource.Play();
 
         prevSpectrum = new float[SpectrumSize];
+
+        // Mute AudioSource initially
+        audioSource.mute = true;
     }
 
     void Update()
@@ -44,7 +49,6 @@ public class GetAudioData : MonoBehaviour
 
     void ToggleMicrophoneInput()
     {
-        AudioSource audioSource = GetComponent<AudioSource>();
         if (Microphone.IsRecording(null))
         {
             Microphone.End(null);
@@ -61,7 +65,10 @@ public class GetAudioData : MonoBehaviour
     void AnalyzeAudioData()
     {
         float[] samples = new float[SpectrumSize];
-        AudioSource audioSource = GetComponent<AudioSource>();
+
+        // Unmute AudioSource when microphone is active
+        audioSource.mute = false;
+
         audioSource.GetOutputData(samples, 0); // Get audio samples from the audio source
 
         float sum = 0f;

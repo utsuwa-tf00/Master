@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class ScoreRecorder : MonoBehaviour
 {
@@ -7,6 +8,9 @@ public class ScoreRecorder : MonoBehaviour
     public float cutoffVol = 0.05f;
     public float coolTime = 0.25f; // Minimum time interval between note assignments
     public string[] score = new string[16]; // Array to store the note names
+
+    public AudioMixerGroup masterMixer; // Reference to the master AudioMixer
+    public AudioMixerGroup dummyMixer; // Reference to the dummy AudioMixer
     
     private string previousScale; // Variable to store the previous scale value
     private AudioClip micAudioClip; // Reference to the microphone audio clip
@@ -50,12 +54,14 @@ public class ScoreRecorder : MonoBehaviour
     {
         micAudioClip = Microphone.Start(null, true, 1, AudioSettings.outputSampleRate);
         audioSource.clip = micAudioClip;
+        audioSource.outputAudioMixerGroup = dummyMixer; // Set the output to the dummy AudioMixer
         audioSource.Play();
     }
 
     private void DetachMic()
     {
         audioSource.clip = null;
+        audioSource.outputAudioMixerGroup = masterMixer; // Set the output to the master AudioMixer
         dataUpdate = true;
     }
 

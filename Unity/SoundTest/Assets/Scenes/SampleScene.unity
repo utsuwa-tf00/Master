@@ -276,37 +276,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &490865083
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 490865085}
-  m_Layer: 0
-  m_Name: SCObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &490865085
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 490865083}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &877615636
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +469,24 @@ MonoBehaviour:
   - 
   - 
   - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  masterMixer: {fileID: 24300002, guid: dd3323edce1104e49a73e62f14f9517f, type: 2}
+  dummyMixer: {fileID: 2829622857702104723, guid: dd3323edce1104e49a73e62f14f9517f, type: 2}
 --- !u!114 &877615645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,7 +502,7 @@ MonoBehaviour:
   scoreRecorder: {fileID: 877615644}
   gain: 0.1
   sampleRate: 48000
-  noteChangeInterval: 0.5
+  noteChangeInterval: 0.25
 --- !u!114 &877615646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,7 +637,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2000, y: 100}
+  m_SizeDelta: {x: 3000, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1133561524
 MonoBehaviour:
@@ -792,7 +779,7 @@ RectTransform:
   - {fileID: 2075319525}
   - {fileID: 1133561523}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
