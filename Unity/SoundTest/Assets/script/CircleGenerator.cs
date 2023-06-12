@@ -6,7 +6,7 @@ public class CircleGenerator : MonoBehaviour
     public GameObject circlePrefab; // Circleのプレハブ
     public ScoreRecorder scoreRecorder; // ScoreRecorderへの参照
 
-    public GameObject[] circles; // Circleの配列
+    private GameObject[] circles; // Circleの配列
 
     void Start()
     {
@@ -50,18 +50,16 @@ public class CircleGenerator : MonoBehaviour
         // Scoreの配列をチェックして必要な処理を行う
         for (int i = 0; i < circles.Length; i++)
         {
-            CircleController circleController = circles[i].GetComponent<CircleController>();
-
-            // 配列にデータが入っているかどうかでcircleToggleを設定
+            GameObject circle = circles[i];
+            // サンプルとして、Scoreの値に応じてCircleの色を変える処理を行う
+            Image circleImage = circle.GetComponent<Image>();
             if (string.IsNullOrEmpty(scoreRecorder.score[i]))
             {
-                circleController.circleToggle = false;
-                circleController.note = ""; // ノートを初期化
+                //circleImage.color = Color.white;
             }
             else
             {
-                circleController.circleToggle = true;
-                circleController.note = scoreRecorder.score[i]; // 音階名を格納
+                //circleImage.color = Color.green;
             }
         }
     }

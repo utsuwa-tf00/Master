@@ -36,18 +36,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\script\ScoreRecorder.cs" />
      <Compile Include="Assets\script\DisplayAudioData.cs" />
-     <Compile Include="Assets\script\ScoreDisplay.cs" />
-     <Compile Include="Assets\script\FrequencyToScaleConverter.cs" />
-     <Compile Include="Assets\script\DynamicAudioGeneration.cs" />
      <Compile Include="Assets\script\GetAudioData.cs" />
-     <Compile Include="Assets\script\FrequencyLibrary.cs" />
-     <Compile Include="Assets\script\SoundLibrary.cs" />
-     <Compile Include="Assets\script\CircleController.cs" />
-     <Compile Include="Assets\script\CircleGenerator.cs" />
      <Compile Include="Assets\script\WaveVisualizer.cs" />
-     <None Include="Assets\Circle\Shader\circle.shader" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.15f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
