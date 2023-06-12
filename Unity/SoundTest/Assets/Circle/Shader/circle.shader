@@ -4,7 +4,7 @@ Shader "Unlit/circle"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Thickness ("Thickness", Range(0.0, 0.5)) = 0.0
-        _BaceCircle ("BaceCircle", Range(0.0, 0.5)) = 0.05
+        _BaseCircle ("BaseCircle", Range(0.0, 0.5)) = 0.05
         _Radius ("Radius", Range(0.0, 0.5)) = 0.0
 
         _R("R", Range(0.0, 1.0)) = 1.0
@@ -29,7 +29,7 @@ Shader "Unlit/circle"
             #include "UnityCG.cginc"
             
             float _Thickness;
-            float _BaceCircle;
+            float _BaseCircle;
             float _Radius;
 
             float _R;
@@ -45,7 +45,7 @@ Shader "Unlit/circle"
                 
                 float d = distance(float2(0.5, 0.5), i.uv);
 
-                if (d <= _BaceCircle)
+                if (d <= _BaseCircle)
                 {
                     return _Color;
                 }
