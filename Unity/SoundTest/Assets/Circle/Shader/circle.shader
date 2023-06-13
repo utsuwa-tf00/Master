@@ -3,7 +3,7 @@ Shader "Unlit/circle"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Thickness ("Thickness", Range(0.0, 0.5)) = 0.0
+        _Thickness ("Thickness", Range(0.0, 0.5)) = 0.05
         _BaseCircle ("BaseCircle", Range(0.0, 0.5)) = 0.05
         _Radius ("Radius", Range(0.0, 0.5)) = 0.0
 

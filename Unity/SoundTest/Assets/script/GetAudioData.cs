@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GetAudioData : MonoBehaviour
 {
-    public float frequency;
-    public float loudness;
+    public float frequency = 0f;
+    public float loudness = 0f;
 
     private bool isMicrophoneActive = true;
 
@@ -14,6 +14,10 @@ public class GetAudioData : MonoBehaviour
 
     void Start()
     {
+        // Set default values for frequency and loudness
+        frequency = 0f;
+        loudness = 0f;
+        
         if (Microphone.devices.Length == 0)
         {
             Debug.LogError("Microphone not found!");
@@ -98,7 +102,7 @@ public class GetAudioData : MonoBehaviour
             }
         }
 
-        frequency = dominantFrequency;
+        frequency = Microphone.IsRecording(null) ? dominantFrequency : 0f; // Set frequency to 0 when microphone is inactive
 
         prevSpectrum = spectrum;
     }

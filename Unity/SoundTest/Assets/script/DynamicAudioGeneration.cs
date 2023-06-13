@@ -131,6 +131,5 @@ public class DynamicAudioGeneration : MonoBehaviour
     public void StopPlaying()
     {
         isPlaying = false;
-        scoreRecorder.mic = true;
     }
 }

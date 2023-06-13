@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 public class CircleController : MonoBehaviour
 {
-    public bool circleToggle = false; // 制御トグル
+    public bool innerCircle = false; // 制御トグル
+    public bool outerCircle = false;
     public Shader circleShader; // シェーダーマテリアル
 
     public string note; // 音階名を格納する変数
@@ -11,9 +12,11 @@ public class CircleController : MonoBehaviour
     private RawImage rawImage; // RawImageコンポーネントの参照
     private Material circleMaterial; // マテリアルのインスタンス
 
-    private float targetBaseCircle = 0.0f; // 目標のbaseCircle値
-    private float currentBaseCircle = 0.0f; // 現在のbaseCircle値
-    public float changeSpeed = 100.0f; // baseCircleの変化速度 
+    private float targetInnerCircle = 0.0f; // 目標のbaseCircle値
+    private float currentInnerCircle = 0.0f; // 現在のbaseCircle値
+    private float targetOuterCircle = 0.0f; // 目標のbaseCircle値
+    private float currentOuterCircle = 0.0f; // 現在のbaseCircle値
+    public float changeSpeed = 10.0f; // baseCircleの変化速度 
 
     private float colR = 1.0f;
     private float colG = 1.0f;
@@ -34,20 +37,36 @@ public class CircleController : MonoBehaviour
         if (rawImage.material.HasProperty("_BaseCircle"))
         {
             // 目標のbaseCircle値を設定
-            if (circleToggle)
+            if (innerCircle)
             {
-                targetBaseCircle = 0.2f;
+                targetInnerCircle = 0.1f;
             }
             else
             {
-                targetBaseCircle = 0.0f;
+                targetInnerCircle = 0.0f;
             }
 
             // 現在のbaseCircle値を滑らかに変化させる
-            currentBaseCircle = Mathf.Lerp(currentBaseCircle, targetBaseCircle, changeSpeed * Time.deltaTime);
+            currentInnerCircle = Mathf.Lerp(currentInnerCircle, targetInnerCircle, changeSpeed * Time.deltaTime);
 
             // baseCircle値をマテリアルに設定
-            rawImage.material.SetFloat("_BaseCircle", currentBaseCircle);
+            rawImage.material.SetFloat("_BaseCircle", currentInnerCircle);
+        }
+
+        if (rawImage.material.HasProperty("_Radius"))
+        {
+            if (outerCircle)
+            {
+                targetOuterCircle = 0.45f;
+            }
+            else
+            {
+                targetOuterCircle = 0.0f;
+            }
+
+            currentOuterCircle = Mathf.Lerp(currentOuterCircle, targetOuterCircle, changeSpeed * Time.deltaTime);
+
+            rawImage.material.SetFloat("_Radius", currentOuterCircle);
         }
 
         ColorChange();
@@ -97,7 +116,7 @@ public class CircleController : MonoBehaviour
             colG = 255;
             colB = 127;
         }
-        else if(note == "E1" || note == "E2" || note == "E3" || note == "E4" || note == "E5" || note == "E6e7")
+        else if(note == "E1" || note == "E2" || note == "E3" || note == "E4" || note == "E5" || note == "E6" || note == "E7")
         {
             colR = 127;
             colG = 255;

@@ -52,16 +52,25 @@ public class CircleGenerator : MonoBehaviour
         {
             CircleController circleController = circles[i].GetComponent<CircleController>();
 
-            // 配列にデータが入っているかどうかでcircleToggleを設定
+            // 配列にデータが入っているかどうかでinnerCircleを設定
             if (string.IsNullOrEmpty(scoreRecorder.score[i]))
             {
-                circleController.circleToggle = false;
+                circleController.innerCircle = false;
                 circleController.note = ""; // ノートを初期化
             }
             else
             {
-                circleController.circleToggle = true;
+                circleController.innerCircle = true;
                 circleController.note = scoreRecorder.score[i]; // 音階名を格納
+            }
+
+            if(scoreRecorder.playCheck[i])
+            {
+                circleController.outerCircle = true;
+            }
+            else
+            {
+                circleController.outerCircle = false;
             }
         }
     }
