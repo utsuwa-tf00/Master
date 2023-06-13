@@ -16,7 +16,7 @@ public class CircleController : MonoBehaviour
     private float currentInnerCircle = 0.0f; // 現在のbaseCircle値
     private float targetOuterCircle = 0.0f; // 目標のbaseCircle値
     private float currentOuterCircle = 0.0f; // 現在のbaseCircle値
-    public float changeSpeed = 10.0f; // baseCircleの変化速度 
+    public float changeSpeed = 0.1f; // baseCircleの変化速度 
 
     private float colR = 1.0f;
     private float colG = 1.0f;
@@ -43,7 +43,7 @@ public class CircleController : MonoBehaviour
             }
             else
             {
-                targetInnerCircle = 0.0f;
+                targetInnerCircle = 0.1f;
             }
 
             // 現在のbaseCircle値を滑らかに変化させる
@@ -144,6 +144,12 @@ public class CircleController : MonoBehaviour
         {
             colR = 127;
             colG = 127;
+            colB = 255;
+        }
+        else
+        {   
+            colR = 255;
+            colG = 255;
             colB = 255;
         }
 
