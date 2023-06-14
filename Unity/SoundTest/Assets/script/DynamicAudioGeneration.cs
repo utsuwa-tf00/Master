@@ -18,8 +18,14 @@ public class DynamicAudioGeneration : MonoBehaviour
     private float frequency;
 
     private int currentScoreIndex = 0;
-    private float noteChangeTimer = 0f;
 
+    private bool[] prevPlayCheck; // 前フレームのplayCheckの状態を保存する配列
+
+    void Start()
+    {
+        prevPlayCheck = new bool[scoreRecorder.playCheck.Length];
+    }
+    
     void Update()
     {
         if (isPlaying)
@@ -30,19 +36,28 @@ public class DynamicAudioGeneration : MonoBehaviour
             }
             else
             {
-                noteChangeTimer += Time.deltaTime;
-                if (noteChangeTimer >= noteChangeInterval)
+                
+                for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
                 {
-                    noteChangeTimer = 0f;
-                    string noteName = scoreRecorder.score[currentScoreIndex];
-                    frequency = FrequencyLibrary.frequencyLibrary[noteName];
-                    currentScoreIndex++;
+                    if (prevPlayCheck[i] == false && scoreRecorder.playCheck[i] == true)
+                    {
+                        string noteName = scoreRecorder.score[currentScoreIndex];
+                        frequency = FrequencyLibrary.frequencyLibrary[noteName];
+                        currentScoreIndex++;
+                        break; // 切り替えたらループを抜ける
+                    }
                 }
             }
         }
         else if (!scoreRecorder.mic)
         {
             StartPlaying();
+        }
+
+        // 現在のフレームのplayCheckの状態を保存する
+        for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
+        {
+            prevPlayCheck[i] = scoreRecorder.playCheck[i];
         }
     }
 
@@ -125,12 +140,10 @@ public class DynamicAudioGeneration : MonoBehaviour
     {
         isPlaying = true;
         currentScoreIndex = 0;
-        noteChangeTimer = 0f;
     }
 
     public void StopPlaying()
     {
         isPlaying = false;
-        scoreRecorder.mic = true;
     }
 }

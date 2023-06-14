@@ -11,7 +11,6 @@ Shader "Unlit/circle"
         _G("G", Range(0.0, 1.0)) = 1.0
         _B("B", Range(0.0, 1.0)) = 1.0
         _Color("Color", Color) = (1,1,1,1)
-
     }
 
     SubShader
@@ -23,6 +22,7 @@ Shader "Unlit/circle"
         Pass
         {
             CGPROGRAM
+            
             #pragma vertex vert_img
             #pragma fragment frag
 

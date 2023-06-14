@@ -86,5 +86,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efae9f762b3b4030853c03f756a7461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  circleToggle: 0
+  innerCircle: 0
+  outerCircle: 0
   circleShader: {fileID: 4800000, guid: 1b3135af8a10048939f3714fce58cb65, type: 3}
+  note: 
+  innerChangeSpeed: 20
+  outerChangeSpeed: 10
+  collarChangeSpeed: 50

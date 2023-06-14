@@ -203,15 +203,20 @@ public class ScoreRecorder : MonoBehaviour
     {
         if (inputScore)
         {
+            int playTimeLength =  playTime.Length;
+
             // scoreに音階が入力された時のみplayTimeを更新する
-            for (int i = 0; i < playTime.Length; i++)
+            for (int i = 0; i < playTimeLength; i++)
             {
-                if (!string.IsNullOrEmpty(score[i]) && playTime[i] == 0 && i != 0) // 音階が入力された要素のみを処理する
+                if (!string.IsNullOrEmpty(score[i]) && playTime[i] == 0) // 音階が入力された要素のみを処理する
                 {
                     playTime[i] = Mathf.Floor(playTimeCount / coolTime);
                     playTimeCount = 0;
                 }
+
+                if(playTime[i] >= 5) playTime[i] = 4;
             }
+            
             inputScore = false;
         }
 
