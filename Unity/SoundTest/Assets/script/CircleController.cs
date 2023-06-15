@@ -8,15 +8,24 @@ public class CircleController : MonoBehaviour
     public Shader circleShader; // シェーダーマテリアル
 
     public string note; // 音階名を格納する変数
+    public float playTime;
 
     private RawImage rawImage; // RawImageコンポーネントの参照
     private Material circleMaterial; // マテリアルのインスタンス
 
-    private float targetInnerCircle = 0.0f; // 目標のbaseCircle値
-    private float currentInnerCircle = 0.0f; // 現在のbaseCircle値
-    private float targetOuterCircle = 0.0f; // 目標のbaseCircle値
-    private float currentOuterCircle = 0.0f; // 現在のbaseCircle値
-    public float innerChangeSpeed = 100.0f; // baseCircleの変化速度 
+    private float targetInnerCircle = 0.0f;
+    private float currentInnerCircle = 0.0f;
+
+    private float targetOuter1Circle = 0.0f;
+    private float currentOuter1Circle = 0.0f;
+    private float targetOuter2Circle = 0.0f;
+    private float currentOuter2Circle = 0.0f;
+    private float targetOuter3Circle = 0.0f;
+    private float currentOuter3Circle = 0.0f;
+    private float targetOuter4Circle = 0.0f;
+    private float currentOuter4Circle = 0.0f;
+
+    public float innerChangeSpeed = 100.0f;
     public float outerChangeSpeed = 100.0f;
     public float collarChangeSpeed = 100.0f;
 
@@ -40,62 +49,61 @@ public class CircleController : MonoBehaviour
 
     private void Update()
     {
-        if (rawImage.material.HasProperty("_BaseCircle"))
+        // innerCircleの値の設定
+        if (innerCircle)
         {
-            // 目標のbaseCircle値を設定
-            if (innerCircle)
-            {
-                targetInnerCircle = 0.1f;
-            }
-            else
-            {
-                targetInnerCircle = 0.01f;
-            }
-
-            // 現在のbaseCircle値を滑らかに変化させる
-            currentInnerCircle = Mathf.Lerp(currentInnerCircle, targetInnerCircle, innerChangeSpeed * Time.deltaTime);
-
-            // baseCircle値をマテリアルに設定
-            rawImage.material.SetFloat("_BaseCircle", currentInnerCircle);
+            targetInnerCircle = 0.05f;
+        }
+        else
+        {
+            targetInnerCircle = 0.01f;
         }
 
-        if (rawImage.material.HasProperty("_Radius"))
+        // outer1Circleの値の設定
+        if (outerCircle)
         {
-            if (outerCircle)
-            {
-                targetOuterCircle = 0.45f;
-            }
-            else
-            {
-                targetOuterCircle = 0.0f;
-            }
-
-            currentOuterCircle = Mathf.Lerp(currentOuterCircle, targetOuterCircle, outerChangeSpeed * Time.deltaTime);
-
-            rawImage.material.SetFloat("_Radius", currentOuterCircle);
+            targetOuter1Circle = 0.25f;
+            targetOuter2Circle = 0.35f;
+            targetOuter3Circle = 0.35f;
+            targetOuter4Circle = 0.45f;
+        }
+        else
+        {
+            targetOuter1Circle = 0.0f;
+            targetOuter2Circle = 0.0f;
+            targetOuter3Circle = 0.0f;
+            targetOuter4Circle = 0.0f;
         }
 
-        if(rawImage.material.HasProperty("_R") && rawImage.material.HasProperty("_G") && rawImage.material.HasProperty("_B"))
+        if(outerCircle)
         {
-            if(outerCircle)
-            {
-                ColorChange();
-            }
-            else
-            {
-                preR = 255;
-                preG = 255;
-                preB = 255;
-            }
-            
-            colR = Mathf.Lerp(colR, preR, collarChangeSpeed * Time.deltaTime);
-            colG = Mathf.Lerp(colG, preG, collarChangeSpeed * Time.deltaTime);
-            colB = Mathf.Lerp(colB, preB, collarChangeSpeed * Time.deltaTime);
-
-            rawImage.material.SetFloat("_R", colR);
-            rawImage.material.SetFloat("_G", colG);
-            rawImage.material.SetFloat("_B", colB);
+            ColorChange();
         }
+        else
+        {
+            preR = 255;
+            preG = 255;
+            preB = 255;
+        }
+
+        currentInnerCircle = Mathf.Lerp(currentInnerCircle, targetInnerCircle, innerChangeSpeed * Time.deltaTime);
+        currentOuter1Circle = Mathf.Lerp(currentOuter1Circle, targetOuter1Circle, outerChangeSpeed * Time.deltaTime);
+        currentOuter2Circle = Mathf.Lerp(currentOuter2Circle, targetOuter2Circle, outerChangeSpeed * Time.deltaTime);
+        currentOuter3Circle = Mathf.Lerp(currentOuter3Circle, targetOuter3Circle, outerChangeSpeed * Time.deltaTime);
+        currentOuter4Circle = Mathf.Lerp(currentOuter4Circle, targetOuter4Circle, outerChangeSpeed * Time.deltaTime);
+        colR = Mathf.Lerp(colR, preR, collarChangeSpeed * Time.deltaTime);
+        colG = Mathf.Lerp(colG, preG, collarChangeSpeed * Time.deltaTime);
+        colB = Mathf.Lerp(colB, preB, collarChangeSpeed * Time.deltaTime);
+
+        rawImage.material.SetFloat("_PlayTime", playTime);
+        rawImage.material.SetFloat("_InnerCircle", currentInnerCircle);
+        rawImage.material.SetFloat("_Outer1Circle", currentOuter1Circle);
+        rawImage.material.SetFloat("_Outer2Circle", currentOuter2Circle);
+        rawImage.material.SetFloat("_Outer3Circle", currentOuter3Circle);
+        rawImage.material.SetFloat("_Outer4Circle", currentOuter4Circle);
+        rawImage.material.SetFloat("_R", colR);
+        rawImage.material.SetFloat("_G", colG);
+        rawImage.material.SetFloat("_B", colB);
     }
 
     void ColorChange()

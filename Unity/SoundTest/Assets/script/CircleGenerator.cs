@@ -72,6 +72,8 @@ public class CircleGenerator : MonoBehaviour
             {
                 circleController.outerCircle = false;
             }
+
+            circleController.playTime = scoreRecorder.playTime[i];
         }
     }
 }
