@@ -144,38 +144,10 @@ public class ScoreRecorder : MonoBehaviour
                 return false;
             }
         }
-
+        
         return true;
     }
 
-    //playCheckをすべてfalseにする
-    private void ResetPlayCheck()
-    {
-        for (int i = 0; i < playCheck.Length; i++)
-        {
-            playCheck[i] = false;
-        }
-
-        //playCheckが全てfalseになったらplayCheckIsFullをfalseにする
-        playCheckIsFull = false;
-    }
-
-    private void StorePlayCheck(bool pc)
-    {
-        bool store = true;
-
-        for (int i = 0; i < score.Length; i++)
-        {
-            if (store && playCheck[i] == false)
-            {
-                playCheck[i] = pc;
-                store = false;
-                break;
-            }
-        }
-    }
-
-    //playCheckの処理----------------------------------------
     //playCheckを更新
     private void PlayCheckUpdate()
     {
@@ -199,6 +171,35 @@ public class ScoreRecorder : MonoBehaviour
         WaitForCoolTime(pcuTime);
     }
 
+    private void StorePlayCheck(bool pc)
+    {
+        bool store = true;
+
+        for (int i = 0; i < score.Length; i++)
+        {
+            if (store && playCheck[i] == false)
+            {
+                playCheck[i] = pc;
+                store = false;
+                break;
+            }
+        }
+    }
+
+    //playCheckをすべてfalseにする
+    private void ResetPlayCheck()
+    {
+        for (int i = 0; i < playCheck.Length; i++)
+        {
+            playCheck[i] = false;
+        }
+
+        //playCheckが全てfalseになったらplayCheckIsFullをfalseにする
+        playCheckIsFull = false;
+    }
+
+    
+    //playTimeの処理----------------------------------------
     private void PlayTimeUpdate()
     {
         if (inputScore)
@@ -269,8 +270,9 @@ public class ScoreRecorder : MonoBehaviour
             //データのリセット
             if(PlayCheckIsFull())
             {
-                playCheckIsFull = true;
                 timeCount = true;
+                playCheckIsFull = true;
+                WaitForCoolTime(4);
             }
             else
             {
@@ -278,7 +280,7 @@ public class ScoreRecorder : MonoBehaviour
                 PlayCheckUpdate();
             }
 
-            if(playCheckIsFull)
+            if(playCheckIsFull && !timeCount)
             {
                 ResetScore();
                 ResetPlayTime();
