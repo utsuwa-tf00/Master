@@ -175,7 +175,7 @@ Shader "Unlit/circle"
                 
                 if (d <= _Outer2Circle && d >= _Outer2Circle - _Outer2Thickness)
                 {
-                    if (r >= 0.1 && r <= 0.4 || r >= 0.6 && r <= 0.9)
+                    if (r >= 0.15 && r <= 0.35 || r >= 0.65 && r <= 0.85)
                     {
                         return _Color;
                     }
@@ -183,7 +183,7 @@ Shader "Unlit/circle"
 
                 if (d <= _Outer3Circle && d >= _Outer3Circle - _Outer3Thickness)
                 {
-                    if (r >= 0.0 && r <= 0.05 || r >= 0.45 && r <= 0.65 || r >= 0.95 && r <= 1)
+                    if (r >= 0.0 && r <= 0.05 || r >= 0.45 && r <= 0.55 || r >= 0.95 && r <= 1)
                     {
                         return _Color;
                     }

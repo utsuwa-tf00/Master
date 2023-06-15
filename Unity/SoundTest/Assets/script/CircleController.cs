@@ -52,11 +52,11 @@ public class CircleController : MonoBehaviour
         // innerCircleの値の設定
         if (innerCircle)
         {
-            targetInnerCircle = 0.05f;
+            targetInnerCircle = 0.1f;
         }
         else
         {
-            targetInnerCircle = 0.01f;
+            targetInnerCircle = 0.0f;
         }
 
         // outer1Circleの値の設定

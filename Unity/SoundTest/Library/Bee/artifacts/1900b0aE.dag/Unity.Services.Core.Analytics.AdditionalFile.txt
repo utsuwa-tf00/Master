@@ -1,1 +1,1 @@
-C:\workdata\Master\Unity\SoundTest
+/Users/nakatamasaaki/Desktop/Master/Unity/SoundTest
