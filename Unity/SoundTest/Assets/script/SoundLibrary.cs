@@ -98,7 +98,6 @@ public static class SoundLibrary{
     // 数値音階から生波形を出す
     public static void ScaleWave(float[] scale, int size, LineRenderer line)
     {
-        line.SetVertexCount(size);
         float x = -150.0f;
         for (int i = 0; i < size; i++)
         {

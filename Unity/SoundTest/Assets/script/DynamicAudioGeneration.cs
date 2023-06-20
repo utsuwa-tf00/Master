@@ -17,7 +17,7 @@ public class DynamicAudioGeneration : MonoBehaviour
 
     private float frequency;
 
-    private int currentScoreIndex = 0;
+    private float volume;
 
     private bool[] prevPlayCheck; // 前フレームのplayCheckの状態を保存する配列
 
@@ -28,32 +28,27 @@ public class DynamicAudioGeneration : MonoBehaviour
     
     void Update()
     {
-        if (isPlaying)
+        if (!scoreRecorder.mic)
         {
-            if (currentScoreIndex >= scoreRecorder.score.Length)
+            isPlaying = true;
+            for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
             {
-                StopPlaying();
-            }
-            else
-            {
-                
-                for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
+                if (prevPlayCheck[i] == false && scoreRecorder.playCheck[i] == true)
                 {
-                    if (prevPlayCheck[i] == false && scoreRecorder.playCheck[i] == true)
-                    {
-                        string noteName = scoreRecorder.score[currentScoreIndex];
-                        frequency = FrequencyLibrary.frequencyLibrary[noteName];
-                        currentScoreIndex++;
-                        break; // 切り替えたらループを抜ける
-                    }
+                    string noteName = scoreRecorder.score[i];
+                    frequency = FrequencyLibrary.frequencyLibrary[noteName];
+                    volume = scoreRecorder.playVolume[i];
+                    break; // 切り替えたらループを抜ける
                 }
             }
-        }
-        else if (!scoreRecorder.mic)
-        {
-            StartPlaying();
-        }
 
+        }
+        else
+        {
+            volume = 0;
+            isPlaying = false;
+        }
+        
         // 現在のフレームのplayCheckの状態を保存する
         for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
         {
@@ -67,7 +62,7 @@ public class DynamicAudioGeneration : MonoBehaviour
         for (var i = 0; i < data.Length; i = i + channels)
         {
             time = time + increment;
-            data[i] = Mathf.Sin(time);
+            data[i] = Mathf.Sin(time) * volume;
             if (channels == 2) data[i + 1] = data[i];
             if (time > 2 * Mathf.PI) time = 0;
         }
@@ -79,8 +74,8 @@ public class DynamicAudioGeneration : MonoBehaviour
         for (var i = 0; i < data.Length; i = i + channels)
         {
             time = time + increment;
-            if (time > -Mathf.PI && time <= 0) data[i] = -1;
-            if (time > 0 && time <= Mathf.PI) data[i] = 1;
+            if (time > -Mathf.PI && time <= 0) data[i] = -1 * volume;
+            if (time > 0 && time <= Mathf.PI) data[i] = 1 * volume;
             if (channels == 2) data[i + 1] = data[i];
             if (time > 2 * Mathf.PI) time = 0;
         }
@@ -92,9 +87,9 @@ public class DynamicAudioGeneration : MonoBehaviour
         for (var i = 0; i < data.Length; i = i + channels)
         {
             time = time + increment;
-            if (time > -Mathf.PI && time <= -Mathf.PI / 2) data[i] = -2 * (time + Mathf.PI);
-            if (time > -Mathf.PI / 2 && time <= Mathf.PI / 2) data[i] = 2 * time;
-            if (time > Mathf.PI / 2 && time <= Mathf.PI) data[i] = -2 * (time - Mathf.PI);
+            if (time > -Mathf.PI && time <= -Mathf.PI / 2) data[i] = (-2 * (time + Mathf.PI)) * volume;
+            if (time > -Mathf.PI / 2 && time <= Mathf.PI / 2) data[i] = (2 * time * volume);
+            if (time > Mathf.PI / 2 && time <= Mathf.PI) data[i] = (-2 * (time - Mathf.PI) * volume);
             if (channels == 2) data[i + 1] = data[i];
             if (time > 2 * Mathf.PI) time = 0;
         }
@@ -106,7 +101,7 @@ public class DynamicAudioGeneration : MonoBehaviour
         for (var i = 0; i < data.Length; i = i + channels)
         {
             time = time + increment;
-            data[i] = (float)(0.5 * ((time + Mathf.PI) % (Mathf.PI * 2)) / Mathf.PI - 1.0);
+            data[i] = (float)(0.5 * ((time + Mathf.PI) % (Mathf.PI * 2)) / Mathf.PI - 1.0) * volume;
             if (channels == 2) data[i + 1] = data[i];
             if (time > 2 * Mathf.PI) time = 0;
         }
@@ -139,7 +134,6 @@ public class DynamicAudioGeneration : MonoBehaviour
     public void StartPlaying()
     {
         isPlaying = true;
-        currentScoreIndex = 0;
     }
 
     public void StopPlaying()

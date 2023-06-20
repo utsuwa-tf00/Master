@@ -449,9 +449,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioData: {fileID: 877615641}
+  masterMixer: {fileID: 24300002, guid: dd3323edce1104e49a73e62f14f9517f, type: 2}
+  dummyMixer: {fileID: 2829622857702104723, guid: dd3323edce1104e49a73e62f14f9517f, type: 2}
   mic: 1
-  cutoffVol: 0.015
+  cutoffVol: 0.03
   coolTime: 0.1
+  numberOfBars: 4
+  volumeLeverage: 5
   score:
   - 
   - 
@@ -503,9 +507,24 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  masterMixer: {fileID: 24300002, guid: dd3323edce1104e49a73e62f14f9517f, type: 2}
-  dummyMixer: {fileID: 2829622857702104723, guid: dd3323edce1104e49a73e62f14f9517f, type: 2}
-  playTimeCount: 0
+  playVolume:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  maxPlayNumber: 0
 --- !u!114 &877615645
 MonoBehaviour:
   m_ObjectHideFlags: 0
