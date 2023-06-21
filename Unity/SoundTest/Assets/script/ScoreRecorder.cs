@@ -36,7 +36,7 @@ public class ScoreRecorder : MonoBehaviour
 
     private int soundsNumberCount;
 
-    private void Start()
+    public void Start()
     {
         audioSource = GetComponent<AudioSource>();
         SetMicInput();

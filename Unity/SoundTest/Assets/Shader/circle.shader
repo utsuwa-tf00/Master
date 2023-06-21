@@ -5,6 +5,9 @@ Shader "Unlit/circle"
         _MainTex ("Texture", 2D) = "white" {}
         _PlayTime ("PlayTime", float) = 0.0
 
+        _Volume ("Volume", Range(0.0, 1.0)) = 0.5
+        _VolumeThickness("VolumeThickness", Range(0.0, 0.5)) = 0.05
+
         _InnerCircle ("BaseCircle", Range(0.0, 0.5)) = 0.05
 
         _Outer1Circle ("Outer1Circle", Range(0.0, 0.5)) = 0.0
@@ -40,6 +43,9 @@ Shader "Unlit/circle"
             
             float _PlayTime;
 
+            float _Volume;
+            float _VolumeThickness;
+
             float _InnerCircle;
 
             float _Outer1Circle;
@@ -56,63 +62,8 @@ Shader "Unlit/circle"
             float _B;
             float4 _Color;
 
-            float4 InnerCircle(float d)
-            {
-                if (d <= _InnerCircle)
-                {
-                    return _Color;
-                }
-
-                return float4(0.0, 0.0, 0.0, 0.0);
-            }
-
-            float4 Outer1Circle(float d, float r)
-            {
-                if (r >= 0.2 && r <= 0.3 || r >= 0.7 && r <= 0.8)
-                {
-                    return _Color;
-                }
-
-                return float4(0.0, 0.0, 0.0, 0.0);
-            }
-
-            float Outer2Circle(float d, float r)
-            {
-                if (r >= 0.1 && r <= 0.4 || r >= 0.6 && r <= 0.9)
-                {
-                    return _Color;
-                }
-
-                return float4(0.0, 0.0, 0.0, 0.0);
-            }
-
-            float Outer3Circle(float d, float r)
-            {
-                if (r >= 0.0 && r <= 0.05 || r >= 0.45 && r <= 0.65 || r >= 0.95 && r <= 1)
-                {
-                    return _Color;
-                }
-
-                return float4(0.0, 0.0, 0.0, 0.0);
-            }
-
-            float Outer4Circle(float d, float r)
-            {
-                if (r >= 0.05 && r <= 0.45 || r >= 0.55 && r <= 0.95)
-                {
-                    return _Color;
-                }
-
-                return float4(0.0, 0.0, 0.0, 0.0);
-            }
-
             float4 PlayTime1(float d, float r)
             {
-                if (d <= _InnerCircle)
-                {
-                    return _Color;
-                }
-
                 if(d <= _Outer1Circle && d >= _Outer1Circle - _Outer1Thickness)
                 {
                     if (r >= 0.2 && r <= 0.3 || r >= 0.7 && r <= 0.8)
@@ -142,11 +93,6 @@ Shader "Unlit/circle"
 
             float4 PlayTime2(float d, float r)
             {
-                if (d <= _InnerCircle)
-                {
-                    return _Color;
-                }
-                
                 if (d <= _Outer2Circle && d >= _Outer2Circle - _Outer2Thickness)
                 {
                     if (r >= 0.1 && r <= 0.4 || r >= 0.6 && r <= 0.9)
@@ -168,11 +114,6 @@ Shader "Unlit/circle"
 
             float4 PlayTime3(float d, float r)
             {
-                if (d <= _InnerCircle)
-                {
-                    return _Color;
-                }
-                
                 if (d <= _Outer2Circle && d >= _Outer2Circle - _Outer2Thickness)
                 {
                     if (r >= 0.15 && r <= 0.35 || r >= 0.65 && r <= 0.85)
@@ -202,11 +143,6 @@ Shader "Unlit/circle"
 
             float4 PlayTime4(float d, float r)
             {
-                if (d <= _InnerCircle)
-                {
-                    return _Color;
-                }
-                
                 if (d <= _Outer4Circle && d >= _Outer4Circle - _Outer4Thickness)
                 {
                     if (r >= 0.05 && r <= 0.45 || r >= 0.55 && r <= 0.95)
@@ -228,6 +164,10 @@ Shader "Unlit/circle"
                 float2 st = 0.5 - i.uv;
                 float a = atan2(st.y, st.x);
                 float r = (a + PI) / (PI * 2);
+
+                float vol = _Volume/2;
+                _VolumeThickness = _PlayTime*0.005;
+                if(d <= vol && d >= vol - _VolumeThickness)return _Color;
 
                 if(_PlayTime == 1)
                 {

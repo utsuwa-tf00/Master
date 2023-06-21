@@ -17,7 +17,7 @@ public class DynamicAudioGeneration : MonoBehaviour
 
     private float frequency;
 
-    private float volume;
+    public float volume;
 
     private bool[] prevPlayCheck; // 前フレームのplayCheckの状態を保存する配列
 
@@ -33,7 +33,7 @@ public class DynamicAudioGeneration : MonoBehaviour
             isPlaying = true;
             for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
             {
-                if (prevPlayCheck[i] == false && scoreRecorder.playCheck[i] == true)
+                if (prevPlayCheck[i] == false && scoreRecorder.playCheck[i] == true && scoreRecorder.playTime[i] != 0)
                 {
                     string noteName = scoreRecorder.score[i];
                     frequency = FrequencyLibrary.frequencyLibrary[noteName];
