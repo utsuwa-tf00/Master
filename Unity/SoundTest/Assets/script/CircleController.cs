@@ -15,8 +15,8 @@ public class CircleController : MonoBehaviour
     private RawImage rawImage; // RawImageコンポーネントの参照
     private Material circleMaterial; // マテリアルのインスタンス
 
-    private float targetInnerCircle = 0.0f;
-    private float currentInnerCircle = 0.0f;
+    //private float targetInnerCircle = 0.0f;
+    //private float currentInnerCircle = 0.0f;
 
     public float volume;
     public float targetVolumeCircle = 0.0f;
