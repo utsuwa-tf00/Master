@@ -7,34 +7,40 @@ using UnityEngine.Audio;
 public class ScoreRecorder : MonoBehaviour
 {
     public GetAudioData audioData; //GetAudioDataスクリプトの読み込み
+    public CodesCheck codesCheck;
     public AudioMixerGroup masterMixer; //音を出力するためのミキサーの読み込み
     public AudioMixerGroup dummyMixer; //音を出力しないダミーのミキサーの読み込み
+
     public bool mic = false; //録音状態かそうでないかを切り替えるbool
     public float cutoffVol = 0.05f; //音の入力を開始する最低値
     public float coolTime = 0.25f; //次の入力までの時間
     public int numberOfBars = 4; //小節数
     private int numberOfSounds = 64;
     public int volumeLeverage = 2; //音量の倍率
+
+    // 内部の処理
     public string[] score = new string[16];
     public bool[] playCheck = new bool[16];
     private string resentNote = "";
     private int playCheckCount = 0;
     public float[] playTime = new float[16];
-    public float[] inputVolumes = new float[16];
+    private float[] inputVolumes = new float[16];
     private int maxPlayNumber = 0;
 
-    public List<string> melodyScore = new List<string>();
+    // 再生用のスコア
+    private List<string> melodyScore = new List<string>();
     private List<float> volumeScore = new List<float>();
+    private List<List<string>> backScore = new List<List<string>>();
     public string nowMelodyNote = "";
     public float nowMelodyVolume = 0;
+    public List<string> nowBackCode = new List<string>();
 
     
-    private string previousScale;
+    private string previousScale; // ひとつ前に入力された音名
     private AudioClip micAudioClip;
     private AudioSource audioSource;
-    private float elapsedTime = 0f;
+    private float elapsedTime = 0f; // 時間計測開始からの経過時間
 
-    private bool playCheckIsFull = false;
     private bool timeCount = false;
     private bool startPTU = false;
     private bool startPVU = false;
@@ -44,7 +50,7 @@ public class ScoreRecorder : MonoBehaviour
     private float pcuTime = 1;
 
     private int soundsNumberCount;
-
+    
     private bool playStart = false;
 
     public void Start()
@@ -64,7 +70,7 @@ public class ScoreRecorder : MonoBehaviour
         ResetPlayTime();
 
         inputVolumes =new float[numberOfSounds];
-        ResetinputVolumes();
+        ResetInputVolumes();
 
         ResetScores();
     }
@@ -87,21 +93,6 @@ public class ScoreRecorder : MonoBehaviour
 
             elapsedTime += Time.deltaTime;
         }
-    }
-
-    //マイクの設定----------------------------------------
-    private void SetMicInput()
-    {
-        micAudioClip = Microphone.Start(null, true, 1, AudioSettings.outputSampleRate);
-        audioSource.clip = micAudioClip;
-        audioSource.outputAudioMixerGroup = dummyMixer; // Set the output to the dummy AudioMixer
-        audioSource.Play();
-    }
-
-    private void DetachMic()
-    {
-        audioSource.clip = null;
-        audioSource.outputAudioMixerGroup = masterMixer; // Set the output to the master AudioMixer
     }
 
     //scoreの処理----------------------------------------
@@ -231,9 +222,6 @@ public class ScoreRecorder : MonoBehaviour
 
         resentNote = "";
         playCheckCount = 0;
-
-        //playCheckが全てfalseになったらplayCheckIsFullをfalseにする
-        playCheckIsFull = false;
     }
     
     //playTimeの処理----------------------------------------
@@ -241,10 +229,10 @@ public class ScoreRecorder : MonoBehaviour
     {
         if (startPTU)
         {
-            int playTimeLength =  playTime.Length;
+            int playtimeCount = 0;
 
             // scoreに音階が入力された時のみplayTimeを更新する
-            for (int i = 0; i < playTimeLength; i++)
+            for (int i = 0; i < playTime.Length; i++)
             {
                 if (!string.IsNullOrEmpty(score[i]) && playTime[i] == 0) // 音階が入力された要素のみを処理する
                 {
@@ -253,10 +241,15 @@ public class ScoreRecorder : MonoBehaviour
                 }
 
                 if(playTime[i] >= 5) playTime[i] = 4;
+
+                if(playCheckCount + (int)playTime[i] <= numberOfSounds)playCheckCount += (int)playTime[i];
+                else playTime[i] = (playTime[i] + playCheckCount) - numberOfSounds;
             }
             
             startPTU = false;
         }
+
+        playCheckCount = 0;
 
         if (ptcBool) playTimeCount += Time.deltaTime;
     }
@@ -292,7 +285,7 @@ public class ScoreRecorder : MonoBehaviour
         }
     }
 
-    private void ResetinputVolumes()
+    private void ResetInputVolumes()
     {
         Array.Clear(inputVolumes, 0, inputVolumes.Length);
     }
@@ -307,7 +300,6 @@ public class ScoreRecorder : MonoBehaviour
 
             for(int j = 0; j < (int)playTime[i]; j++)
             {
-                if(melodyScore.Count > numberOfSounds || volumeScore.Count > numberOfSounds) break;
                 melodyScore.Add(score[i]);
                 volumeScore.Add(inputVolumes[i]);
             }
@@ -318,28 +310,47 @@ public class ScoreRecorder : MonoBehaviour
     {
         nowMelodyNote = "C4";
         nowMelodyVolume = 0;
+        nowBackCode.Clear();
+
         melodyScore.Clear();
         volumeScore.Clear();
     }
 
     // 現在再生されている音のデータを取得する処理----------------------------------------
-    private IEnumerator PlayMode()
+    private IEnumerator ProsesInPlayMode()
     {
+        int count = 0;
+
         for(int ns = 0; ns < numberOfSounds; ns++)
         {
+            int bar = (int)Mathf.Floor(ns / 16);
 
             nowMelodyNote = melodyScore[ns];
             nowMelodyVolume = volumeScore[ns];
 
+            nowBackCode = codesCheck.backScore[bar];
+
+            if(nowBackCode.Count == 3)
+            {
+                nowBackCode.Add("");
+                nowBackCode.Add("");
+            }
+            else if(nowBackCode.Count == 4)nowBackCode.Add("");
+
+            // playCheckの更新
             if(resentNote != nowMelodyNote)
             {
-                playCheck[playCheckCount] = true;
-                playCheckCount++;
-            }
-            resentNote = nowMelodyNote;
+                playCheck[count] = true;
+                count++;
 
+                resentNote = nowMelodyNote;
+            }
+            
             yield return new WaitForSecondsRealtime(coolTime);
         }
+        count = 0;
+        ResetAll();
+        MicOn();
     }
 
     //dataUpdate内のマイクの処理----------------------------------------
@@ -355,11 +366,50 @@ public class ScoreRecorder : MonoBehaviour
         mic = false;
     }
 
+    //マイクの設定----------------------------------------
+    private void SetMicInput()
+    {
+        micAudioClip = Microphone.Start(null, true, 1, AudioSettings.outputSampleRate);
+        audioSource.clip = micAudioClip;
+        audioSource.outputAudioMixerGroup = dummyMixer; // Set the output to the dummy AudioMixer
+        audioSource.Play();
+    }
+
+    private void DetachMic()
+    {
+        audioSource.clip = null;
+        audioSource.outputAudioMixerGroup = masterMixer; // Set the output to the master AudioMixer
+    }
+
+    //モードごとの処理----------------------------------------
+    private void RecMode()
+    {
+
+    }
+
+    private void PlayMode()
+    {
+        if(playStart)
+        {
+            StartCoroutine(ProsesInPlayMode()); // データ出力などの処理
+            playStart = false;
+        }
+    }
+
+    private void ResetAll()
+    {
+        ResetScore();
+        ResetPlayTime();
+        ResetInputVolumes();
+        ResetPlayCheck();
+        ResetScores();
+    }
+
     //データの更新を行う----------------------------------------
     private void DataUpdate()
     {
         //マイクがオンになった時・オンになっている時(録音中)
-        if (mic && playCheckIsFull == false)
+        if (mic)
         {
             //scoreがいっぱいになったらmicをfalseにする
             if (ScoreIsFull())
@@ -380,33 +430,9 @@ public class ScoreRecorder : MonoBehaviour
         {
             if(playStart)
             {
-                StartCoroutine(PlayMode());
+                GetScores(); // スコア取得
+                StartCoroutine(ProsesInPlayMode());
                 playStart = false;
-            }
-
-            //playCheckが全てtrueになったら実行
-            //データのリセット
-            if(PlayCheckIsFull())
-            {
-                timeCount = true;
-                playCheckIsFull = true;
-                WaitForCoolTime(lastNotePlayTime);
-            }
-            else
-            {
-                //再生を行う(再生された音にチェック)
-                //PlayCheckUpdate();
-            }
-
-            if(playCheckIsFull && !timeCount)
-            {
-                ResetScore();
-                ResetPlayTime();
-                ResetinputVolumes();
-                ResetPlayCheck();
-                lastNotePlayTime = 0;
-                ResetScores();
-                MicOn();
             }
         }
     }

@@ -86,18 +86,10 @@ public class CircleGenerator : MonoBehaviour
         {
             CircleController circleController = circles[i].GetComponent<CircleController>();
 
-            // 配列にデータが入っていない
-            if (string.IsNullOrEmpty(scoreRecorder.score[i]))
-            {
-                circleController.innerCircle = false;
-                circleController.note = ""; // ノートを初期化
-                circleController.volume = 0;
-            }
-            //配列にデータが入った
-            else
+            if(scoreRecorder.playCheck[i])
             {
                 circleController.innerCircle = true;
-                circleController.note = scoreRecorder.score[i]; // 音階名を格納
+                circleController.note = scoreRecorder.nowMelodyNote; // 音階名を格納
 
                 if(circleController.volume == 0 && !scoreRecorder.playCheck[i])
                 {
@@ -107,14 +99,14 @@ public class CircleGenerator : MonoBehaviour
                     targetX[i] = UnityEngine.Random.Range(0, 0);
                     targetY[i] = UnityEngine.Random.Range(0, 0);
                 }
-            }
 
-            if(scoreRecorder.playCheck[i])
-            {
                 circleController.outerCircle = true;
             }
             else
             {
+                circleController.innerCircle = false;
+                circleController.note = ""; // ノートを初期化
+                circleController.volume = 0;
                 circleController.outerCircle = false;
             }
             
@@ -126,8 +118,8 @@ public class CircleGenerator : MonoBehaviour
 
                 circleController.targetVolumeCircle = 0.1f;
 
-                angle[i] = Angle(scoreRecorder.score[i]);
-                distance[i] = (screenHeight/18)*(1+NoteNameIdentification.Pitch(scoreRecorder.score[i]));
+                angle[i] = Angle(scoreRecorder.nowMelodyNote);
+                distance[i] = (screenHeight/18)*(1+NoteNameIdentification.Pitch(scoreRecorder.nowMelodyNote));
 
                 targetX[i] = distance[i]*Mathf.Sin(angle[i]*Mathf.PI/180f);
                 targetY[i] = distance[i]*Mathf.Cos(angle[i]*Mathf.PI/180f);

@@ -88,4 +88,50 @@ public class NoteNameIdentification : MonoBehaviour
         else if(note == "C8")return 8;
         return 0;
     }
+
+    public static string Back(string note)
+    {
+        switch(note)
+        {
+            case "C":
+                return "C3";
+                break;
+            case "C#":
+                return "C#3";
+                break;
+            case "D":
+                return "D3";
+                break;
+            case "D#":
+                return "D#3";
+                break;
+            case "E":
+                return "E3";
+                break;
+            case "F":
+                return "F3";
+                break;
+            case "F#":
+                return "F#3";
+                break;
+            case "G":
+                return "G3";
+                break;
+            case "G#":
+                return "G#3";
+                break;
+            case "A":
+                return "A3";
+                break;
+            case "A#":
+                return "A#3";
+                break;
+            case "B":
+                return "B3";
+                break;
+            default:
+                return "";
+                break;
+        }
+    }
 }

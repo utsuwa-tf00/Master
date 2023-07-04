@@ -11,10 +11,7 @@ public class CodesCheck : MonoBehaviour
     private List<string> score = new List<string>();
     private int numberOfBars = 4;
     private List<string> notes = new List<string>(){"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
-    public List<string> code1 = new List<string>();
-    public List<string> code2 = new List<string>();
-    public List<string> code3 = new List<string>();
-    public List<string> code4 = new List<string>();
+    public List<List<string>> backScore = new List<List<string>>();
     
     private List<List<string>> codes = new List<List<string>>();
 
@@ -1095,10 +1092,7 @@ public class CodesCheck : MonoBehaviour
 
             List<List<string>> codesOfBar = CheckCodeArea(scoreOfBar);
 
-            if(i == 0)code1 = CheckCodeConformance(scoreOfBar,codesOfBar);
-            else if(i == 1)code2 = CheckCodeConformance(scoreOfBar,codesOfBar);
-            else if(i == 2)code3 = CheckCodeConformance(scoreOfBar,codesOfBar);
-            else if(i == 3)code4 = CheckCodeConformance(scoreOfBar,codesOfBar);
+            backScore.Add(CheckCodeConformance(scoreOfBar,codesOfBar));
         }
     }
 
@@ -1221,10 +1215,7 @@ public class CodesCheck : MonoBehaviour
     
     void ResetCode()
     {
-        code1.Clear();
-        code2.Clear();
-        code3.Clear();
-        code4.Clear();
+        backScore.Clear();
     }
 
     // Start is called before the first frame update

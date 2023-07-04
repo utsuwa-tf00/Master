@@ -40,7 +40,6 @@
      <Compile Include="Assets\script\CodesCheck.cs" />
      <Compile Include="Assets\script\VolumeVisualizer.cs" />
      <Compile Include="Assets\script\ScoreRecorder.cs" />
-     <Compile Include="Assets\script\ScoreDisplay.cs" />
      <Compile Include="Assets\script\FrequencyToScaleConverter.cs" />
      <Compile Include="Assets\script\DynamicAudioGeneration.cs" />
      <Compile Include="Assets\script\GetAudioData.cs" />
@@ -49,6 +48,7 @@
      <Compile Include="Assets\script\CircleController.cs" />
      <Compile Include="Assets\script\CircleGenerator.cs" />
      <Compile Include="Assets\script\WaveVisualizer.cs" />
+     <Compile Include="Assets\script\BackgroundSoundPlayer.cs" />
      <None Include="Assets\Shader\volume.shader" />
      <None Include="Assets\Shader\circle.shader" />
     <Reference Include="UnityEngine">
