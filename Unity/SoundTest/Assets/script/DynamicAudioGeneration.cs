@@ -19,11 +19,10 @@ public class DynamicAudioGeneration : MonoBehaviour
 
     public float volume;
 
-    private bool[] prevPlayCheck; // 前フレームのplayCheckの状態を保存する配列
 
     void Start()
     {
-        prevPlayCheck = new bool[scoreRecorder.playCheck.Length];
+
     }
     
     void Update()
@@ -31,28 +30,14 @@ public class DynamicAudioGeneration : MonoBehaviour
         if (!scoreRecorder.mic)
         {
             isPlaying = true;
-            for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
-            {
-                if (prevPlayCheck[i] == false && scoreRecorder.playCheck[i] == true && scoreRecorder.playTime[i] != 0)
-                {
-                    string noteName = scoreRecorder.score[i];
-                    frequency = FrequencyLibrary.frequencyLibrary[noteName];
-                    volume = scoreRecorder.playVolume[i];
-                    break; // 切り替えたらループを抜ける
-                }
-            }
-
+            frequency = FrequencyLibrary.frequencyLibrary[scoreRecorder.nowMelodyNote];
+            volume = scoreRecorder.nowMelodyVolume;
         }
         else
         {
+            frequency = 0;
             volume = 0;
             isPlaying = false;
-        }
-        
-        // 現在のフレームのplayCheckの状態を保存する
-        for (int i = 0; i < scoreRecorder.playCheck.Length; i++)
-        {
-            prevPlayCheck[i] = scoreRecorder.playCheck[i];
         }
     }
 
@@ -129,15 +114,5 @@ public class DynamicAudioGeneration : MonoBehaviour
                 SawtoothWave(data, channels);
                 break;
         }
-    }
-
-    public void StartPlaying()
-    {
-        isPlaying = true;
-    }
-
-    public void StopPlaying()
-    {
-        isPlaying = false;
     }
 }

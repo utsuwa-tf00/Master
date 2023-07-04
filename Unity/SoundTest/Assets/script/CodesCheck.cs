@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class CodesCheck : MonoBehaviour
@@ -9,13 +10,26 @@ public class CodesCheck : MonoBehaviour
     private bool scoreDataUpdate = false;
     private List<string> score = new List<string>();
     private int numberOfBars = 4;
-    public List<float> conformanceCheck = new List<float>();
+    private List<string> notes = new List<string>(){"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
     public List<string> code1 = new List<string>();
     public List<string> code2 = new List<string>();
     public List<string> code3 = new List<string>();
     public List<string> code4 = new List<string>();
     
     private List<List<string>> codes = new List<List<string>>();
+
+    private List<List<string>> codesC = new List<List<string>>();
+    private List<List<string>> codesCs = new List<List<string>>();
+    private List<List<string>> codesD = new List<List<string>>();
+    private List<List<string>> codesDs = new List<List<string>>();
+    private List<List<string>> codesE = new List<List<string>>();
+    private List<List<string>> codesF = new List<List<string>>();
+    private List<List<string>> codesFs = new List<List<string>>();
+    private List<List<string>> codesG = new List<List<string>>();
+    private List<List<string>> codesGs = new List<List<string>>();
+    private List<List<string>> codesA = new List<List<string>>();
+    private List<List<string>> codesAs = new List<List<string>>();
+    private List<List<string>> codesB = new List<List<string>>();
 
     // codeC --------------------------------------------------------------------------------
     private List<string> codeC = new List<string>();
@@ -259,7 +273,7 @@ public class CodesCheck : MonoBehaviour
 
 
     
-    // Listに音を読み込む
+    // コードに音を設定する
     void InputCode(List<string> inputCode, string root, string codeType)
     {
         int number = 0;
@@ -805,235 +819,236 @@ public class CodesCheck : MonoBehaviour
     // Start内でListにコードを設定
     void InputCodesInStart()
     {
-        codes.Add(codeC);
-        codes.Add(codeCm);
-        codes.Add(codeCaug);
-        //codes.Add(codeC6);
-        //codes.Add(codeCm6);
-        codes.Add(codeCM7);
-        //codes.Add(codeCmM7);
-        codes.Add(codeC7);
-        codes.Add(codeCm7);
-        //codes.Add(codeCaug7);
-        codes.Add(codeCm7_5);
-        //codes.Add(codeC9);
-        //codes.Add(codeCm9);
-        codes.Add(codeCdim);
-        codes.Add(codeCdim7);
-        //codes.Add(codeCsus4);
-        //codes.Add(codeC7sus4);
-        //codes.Add(codeCadd9);
+        codesC.Add(codeC);
+        codesC.Add(codeCm);
+        codesC.Add(codeCaug);
+        //codesC.Add(codeC6);
+        //codesC.Add(codeCm6);
+        codesC.Add(codeCM7);
+        //codesC.Add(codeCmM7);
+        codesC.Add(codeC7);
+        codesC.Add(codeCm7);
+        //codesC.Add(codeCaug7);
+        codesC.Add(codeCm7_5);
+        //codesC.Add(codeC9);
+        //codesC.Add(codeCm9);
+        codesC.Add(codeCdim);
+        codesC.Add(codeCdim7);
+        //codesC.Add(codeCsus4);
+        //codesC.Add(codeC7sus4);
+        //codesC.Add(codeCadd9);
 
-        codes.Add(codeDb);
-        codes.Add(codeDbm);
-        codes.Add(codeDbaug);
-        //codes.Add(codeDb6);
-        //codes.Add(codeDbm6);
-        codes.Add(codeDbM7);
-        //codes.Add(codeDbmM7);
-        codes.Add(codeDb7);
-        codes.Add(codeDbm7);
-        //codes.Add(codeDbaug7);
-        codes.Add(codeDbm7_5);
-        //codes.Add(codeDb9);
-        //codes.Add(codeDbm9);
-        codes.Add(codeDbdim);
-        codes.Add(codeDbdim7);
-        //codes.Add(codeDbsus4);
-        //codes.Add(codeDb7sus4);
-        //codes.Add(codeDbadd9);
+        codesCs.Add(codeDb);
+        codesCs.Add(codeDbm);
+        codesCs.Add(codeDbaug);
+        //codesCs.Add(codeDb6);
+        //codesCs.Add(codeDbm6);
+        codesCs.Add(codeDbM7);
+        //codesCs.Add(codeDbmM7);
+        codesCs.Add(codeDb7);
+        codesCs.Add(codeDbm7);
+        //codesCs.Add(codeDbaug7);
+        codesCs.Add(codeDbm7_5);
+        //codesCs.Add(codeDb9);
+        //codesCs.Add(codeDbm9);
+        codesCs.Add(codeDbdim);
+        codesCs.Add(codeDbdim7);
+        //codesCs.Add(codeDbsus4);
+        //codesCs.Add(codeDb7sus4);
+        //codesCs.Add(codeDbadd9);
 
-        codes.Add(codeD);
-        codes.Add(codeDm);
-        codes.Add(codeDaug);
-        //codes.Add(codeD6);
-        //codes.Add(codeDm6);
-        codes.Add(codeDM7);
-        //codes.Add(codeDmM7);
-        codes.Add(codeD7);
-        codes.Add(codeDm7);
-        //codes.Add(codeDaug7);
-        codes.Add(codeDm7_5);
-        //codes.Add(codeD9);
-        //codes.Add(codeDm9);
-        codes.Add(codeDdim);
-        codes.Add(codeDdim7);
-        //codes.Add(codeDsus4);
-        //codes.Add(codeD7sus4);
-        //codes.Add(codeDadd9);
+        codesD.Add(codeD);
+        codesD.Add(codeDm);
+        codesD.Add(codeDaug);
+        //codesD.Add(codeD6);
+        //codesD.Add(codeDm6);
+        codesD.Add(codeDM7);
+        //codesD.Add(codeDmM7);
+        codesD.Add(codeD7);
+        codesD.Add(codeDm7);
+        //codesD.Add(codeDaug7);
+        codesD.Add(codeDm7_5);
+        //codesD.Add(codeD9);
+        //codesD.Add(codeDm9);
+        codesD.Add(codeDdim);
+        codesD.Add(codeDdim7);
+        //codesD.Add(codeDsus4);
+        //codesD.Add(codeD7sus4);
+        //codesD.Add(codeDadd9);
 
-        codes.Add(codeEb);
-        codes.Add(codeEbm);
-        codes.Add(codeEbaug);
-        //codes.Add(codeEb6);
-        //codes.Add(codeEbm6);
-        codes.Add(codeEbM7);
-        //codes.Add(codeEbmM7);
-        codes.Add(codeEb7);
-        codes.Add(codeEbm7);
-        //codes.Add(codeEbaug7);
-        codes.Add(codeEbm7_5);
-        //codes.Add(codeEb9);
-        //codes.Add(codeEbm9);
-        codes.Add(codeEbdim);
-        codes.Add(codeEbdim7);
-        //codes.Add(codeEbsus4);
-        //codes.Add(codeEb7sus4);
-        //codes.Add(codeEbadd9);
+        codesDs.Add(codeEb);
+        codesDs.Add(codeEbm);
+        codesDs.Add(codeEbaug);
+        //codesDs.Add(codeEb6);
+        //codesDs.Add(codeEbm6);
+        codesDs.Add(codeEbM7);
+        //codesDs.Add(codeEbmM7);
+        codesDs.Add(codeEb7);
+        codesDs.Add(codeEbm7);
+        //codesDs.Add(codeEbaug7);
+        codesDs.Add(codeEbm7_5);
+        //codesDs.Add(codeEb9);
+        //codesDs.Add(codeEbm9);
+        codesDs.Add(codeEbdim);
+        codesDs.Add(codeEbdim7);
+        //codesDs.Add(codeEbsus4);
+        //codesDs.Add(codeEb7sus4);
+        //codesDs.Add(codeEbadd9);
 
-        codes.Add(codeE);
-        codes.Add(codeEm);
-        codes.Add(codeEaug);
-        //codes.Add(codeE6);
-        //codes.Add(codeEm6);
-        codes.Add(codeEM7);
-        //codes.Add(codeEmM7);
-        codes.Add(codeE7);
-        codes.Add(codeEm7);
-        //codes.Add(codeEaug7);
-        codes.Add(codeEm7_5);
-        //codes.Add(codeE9);
-        //codes.Add(codeEm9);
-        codes.Add(codeEdim);
-        codes.Add(codeEdim7);
-        //codes.Add(codeEsus4);
-        //codes.Add(codeE7sus4);
-        //codes.Add(codeEadd9);
+        codesE.Add(codeE);
+        codesE.Add(codeEm);
+        codesE.Add(codeEaug);
+        //codesE.Add(codeE6);
+        //codesE.Add(codeEm6);
+        codesE.Add(codeEM7);
+        //codesE.Add(codeEmM7);
+        codesE.Add(codeE7);
+        codesE.Add(codeEm7);
+        //codesE.Add(codeEaug7);
+        codesE.Add(codeEm7_5);
+        //codesE.Add(codeE9);
+        //codesE.Add(codeEm9);
+        codesE.Add(codeEdim);
+        codesE.Add(codeEdim7);
+        //codesE.Add(codeEsus4);
+        //codesE.Add(codeE7sus4);
+        //codesE.Add(codeEadd9);
 
-        codes.Add(codeF);
-        codes.Add(codeFm);
-        codes.Add(codeFaug);
-        //codes.Add(codeF6);
-        //codes.Add(codeFm6);
-        codes.Add(codeFM7);
-        //codes.Add(codeFmM7);
-        codes.Add(codeF7);
-        codes.Add(codeFm7);
-        //codes.Add(codeFaug7);
-        codes.Add(codeFm7_5);
-        //codes.Add(codeF9);
-        //codes.Add(codeFm9);
-        codes.Add(codeFdim);
-        codes.Add(codeFdim7);
-        //codes.Add(codeFsus4);
-        //codes.Add(codeF7sus4);
-        //codes.Add(codeFadd9);
+        codesF.Add(codeF);
+        codesF.Add(codeFm);
+        codesF.Add(codeFaug);
+        //codesF.Add(codeF6);
+        //codesF.Add(codeFm6);
+        codesF.Add(codeFM7);
+        //codesF.Add(codeFmM7);
+        codesF.Add(codeF7);
+        codesF.Add(codeFm7);
+        //codesF.Add(codeFaug7);
+        codesF.Add(codeFm7_5);
+        //codesF.Add(codeF9);
+        //codesF.Add(codeFm9);
+        codesF.Add(codeFdim);
+        codesF.Add(codeFdim7);
+        //codesF.Add(codeFsus4);
+        //codesF.Add(codeF7sus4);
+        //codesF.Add(codeFadd9);
 
-        codes.Add(codeFs);
-        codes.Add(codeFsm);
-        codes.Add(codeFsaug);
-        //codes.Add(codeFs6);
-        //codes.Add(codeFsm6);
-        codes.Add(codeFsM7);
-        //codes.Add(codeFsmM7);
-        codes.Add(codeFs7);
-        codes.Add(codeFsm7);
-        //codes.Add(codeFsaug7);
-        codes.Add(codeFsm7_5);
-        //codes.Add(codeFs9);
-        //codes.Add(codeFsm9);
-        codes.Add(codeFsdim);
-        codes.Add(codeFsdim7);
-        //codes.Add(codeFssus4);
-        //codes.Add(codeFs7sus4);
-        //codes.Add(codeFsadd9);
+        codesFs.Add(codeFs);
+        codesFs.Add(codeFsm);
+        codesFs.Add(codeFsaug);
+        //codesFs.Add(codeFs6);
+        //codesFs.Add(codeFsm6);
+        codesFs.Add(codeFsM7);
+        //codesFs.Add(codeFsmM7);
+        codesFs.Add(codeFs7);
+        codesFs.Add(codeFsm7);
+        //codesFs.Add(codeFsaug7);
+        codesFs.Add(codeFsm7_5);
+        //codesFs.Add(codeFs9);
+        //codesFs.Add(codeFsm9);
+        codesFs.Add(codeFsdim);
+        codesFs.Add(codeFsdim7);
+        //codesFs.Add(codeFssus4);
+        //codesFs.Add(codeFs7sus4);
+        //codesFs.Add(codeFsadd9);
 
-        codes.Add(codeG);
-        codes.Add(codeGm);
-        codes.Add(codeGaug);
-        //codes.Add(codeG6);
-        //codes.Add(codeGm6);
-        codes.Add(codeGM7);
-        //codes.Add(codeGmM7);
-        codes.Add(codeG7);
-        codes.Add(codeGm7);
-        //codes.Add(codeGaug7);
-        codes.Add(codeGm7_5);
-        //codes.Add(codeG9);
-        //codes.Add(codeGm9);
-        codes.Add(codeGdim);
-        codes.Add(codeGdim7);
-        //codes.Add(codeGsus4);
-        //codes.Add(codeG7sus4);
-        //codes.Add(codeGadd9);
+        codesG.Add(codeG);
+        codesG.Add(codeGm);
+        codesG.Add(codeGaug);
+        //codesG.Add(codeG6);
+        //codesG.Add(codeGm6);
+        codesG.Add(codeGM7);
+        //codesG.Add(codeGmM7);
+        codesG.Add(codeG7);
+        codesG.Add(codeGm7);
+        //codesG.Add(codeGaug7);
+        codesG.Add(codeGm7_5);
+        //codesG.Add(codeG9);
+        //codesG.Add(codeGm9);
+        codesG.Add(codeGdim);
+        codesG.Add(codeGdim7);
+        //codesG.Add(codeGsus4);
+        //codesG.Add(codeG7sus4);
+        //codesG.Add(codeGadd9);
 
-        codes.Add(codeAb);
-        codes.Add(codeAbm);
-        codes.Add(codeAbaug);
-        //codes.Add(codeAb6);
-        //codes.Add(codeAbm6);
-        codes.Add(codeAbM7);
-        //codes.Add(codeAbmM7);
-        codes.Add(codeAb7);
-        codes.Add(codeAbm7);
-        //codes.Add(codeAbaug7);
-        codes.Add(codeAbm7_5);
-        //codes.Add(codeAb9);
-        //codes.Add(codeAbm9);
-        codes.Add(codeAbdim);
-        codes.Add(codeAbdim7);
-        //codes.Add(codeAbsus4);
-        //codes.Add(codeAb7sus4);
-        //codes.Add(codeAbadd9);
+        codesGs.Add(codeAb);
+        codesGs.Add(codeAbm);
+        codesGs.Add(codeAbaug);
+        //codesGs.Add(codeAb6);
+        //codesGs.Add(codeAbm6);
+        codesGs.Add(codeAbM7);
+        //codesGs.Add(codeAbmM7);
+        codesGs.Add(codeAb7);
+        codesGs.Add(codeAbm7);
+        //codesGs.Add(codeAbaug7);
+        codesGs.Add(codeAbm7_5);
+        //codesGs.Add(codeAb9);
+        //codesGs.Add(codeAbm9);
+        codesGs.Add(codeAbdim);
+        codesGs.Add(codeAbdim7);
+        //codesGs.Add(codeAbsus4);
+        //codesGs.Add(codeAb7sus4);
+        //codesGs.Add(codeAbadd9);
 
-        codes.Add(codeA);
-        codes.Add(codeAm);
-        codes.Add(codeAaug);
-        //codes.Add(codeA6);
-        //codes.Add(codeAm6);
-        codes.Add(codeAM7);
-        //codes.Add(codeAmM7);
-        codes.Add(codeA7);
-        codes.Add(codeAm7);
-        //codes.Add(codeAaug7);
-        codes.Add(codeAm7_5);
-        //codes.Add(codeA9);
-        //codes.Add(codeAm9);
-        codes.Add(codeAdim);
-        codes.Add(codeAdim7);
-        //codes.Add(codeAsus4);
-        //codes.Add(codeA7sus4);
-        //codes.Add(codeAadd9);
+        codesA.Add(codeA);
+        codesA.Add(codeAm);
+        codesA.Add(codeAaug);
+        //codesA.Add(codeA6);
+        //codesA.Add(codeAm6);
+        codesA.Add(codeAM7);
+        //codesA.Add(codeAmM7);
+        codesA.Add(codeA7);
+        codesA.Add(codeAm7);
+        //codesA.Add(codeAaug7);
+        codesA.Add(codeAm7_5);
+        //codesA.Add(codeA9);
+        //codesA.Add(codeAm9);
+        codesA.Add(codeAdim);
+        codesA.Add(codeAdim7);
+        //codesA.Add(codeAsus4);
+        //codesA.Add(codeA7sus4);
+        //codesA.Add(codeAadd9);
 
-        codes.Add(codeBb);
-        codes.Add(codeBbm);
-        codes.Add(codeBbaug);
-        //codes.Add(codeBb6);
-        //codes.Add(codeBbm6);
-        codes.Add(codeBbM7);
-        //codes.Add(codeBbmM7);
-        codes.Add(codeBb7);
-        codes.Add(codeBbm7);
-        //codes.Add(codeBbaug7);
-        codes.Add(codeBbm7_5);
-        //codes.Add(codeBb9);
-        //codes.Add(codeBbm9);
-        codes.Add(codeBbdim);
-        codes.Add(codeBbdim7);
-        //codes.Add(codeBbsus4);
-        //codes.Add(codeBb7sus4);
-        //codes.Add(codeBbadd9);
+        codesAs.Add(codeBb);
+        codesAs.Add(codeBbm);
+        codesAs.Add(codeBbaug);
+        //codesAs.Add(codeBb6);
+        //codesAs.Add(codeBbm6);
+        codesAs.Add(codeBbM7);
+        //codesAs.Add(codeBbmM7);
+        codesAs.Add(codeBb7);
+        codesAs.Add(codeBbm7);
+        //codesAs.Add(codeBbaug7);
+        codesAs.Add(codeBbm7_5);
+        //codesAs.Add(codeBb9);
+        //codesAs.Add(codeBbm9);
+        codesAs.Add(codeBbdim);
+        codesAs.Add(codeBbdim7);
+        //codesAs.Add(codeBbsus4);
+        //codesAs.Add(codeBb7sus4);
+        //codesAs.Add(codeBbadd9);
 
-        codes.Add(codeB);
-        codes.Add(codeBm);
-        codes.Add(codeBaug);
-        //codes.Add(codeB6);
-        //codes.Add(codeBm6);
-        codes.Add(codeBM7);
-        //codes.Add(codeBmM7);
-        codes.Add(codeB7);
-        codes.Add(codeBm7);
-        //codes.Add(codeBaug7);
-        codes.Add(codeBm7_5);
-        //codes.Add(codeB9);
-        //codes.Add(codeBm9);
-        codes.Add(codeBdim);
-        codes.Add(codeBdim7);
-        //codes.Add(codeBsus4);
-        //codes.Add(codeB7sus4);
-        //codes.Add(codeBadd9);
+        codesB.Add(codeB);
+        codesB.Add(codeBm);
+        codesB.Add(codeBaug);
+        //codesB.Add(codeB6);
+        //codesB.Add(codeBm6);
+        codesB.Add(codeBM7);
+        //codesB.Add(codeBmM7);
+        codesB.Add(codeB7);
+        codesB.Add(codeBm7);
+        //codesB.Add(codeBaug7);
+        codesB.Add(codeBm7_5);
+        //codesB.Add(codeB9);
+        //codesB.Add(codeBm9);
+        codesB.Add(codeBdim);
+        codesB.Add(codeBdim7);
+        //codesB.Add(codeBsus4);
+        //codesB.Add(codeB7sus4);
+        //codesB.Add(codeBadd9);
     }
 
+    // スコアをscoreRecorderから取得、変換
     void GetScore()
     {
        for(int i = 0; i < scoreRecorder.playTime.Length; i++)
@@ -1042,7 +1057,19 @@ public class CodesCheck : MonoBehaviour
 
             for(int j = 0; j < (int)scoreRecorder.playTime[i]; j++)
             {
-                score.Add(scoreRecorder.score[i]);
+                if(NoteNameIdentification.C(scoreRecorder.score[i]))score.Add("C");
+                else if(NoteNameIdentification.Cs(scoreRecorder.score[i]))score.Add("C#");
+                else if(NoteNameIdentification.D(scoreRecorder.score[i]))score.Add("D");
+                else if(NoteNameIdentification.Ds(scoreRecorder.score[i]))score.Add("D#");
+                else if(NoteNameIdentification.E(scoreRecorder.score[i]))score.Add("E");
+                else if(NoteNameIdentification.F(scoreRecorder.score[i]))score.Add("F");
+                else if(NoteNameIdentification.Fs(scoreRecorder.score[i]))score.Add("F#");
+                else if(NoteNameIdentification.G(scoreRecorder.score[i]))score.Add("G");
+                else if(NoteNameIdentification.Gs(scoreRecorder.score[i]))score.Add("G#");
+                else if(NoteNameIdentification.A(scoreRecorder.score[i]))score.Add("A");
+                else if(NoteNameIdentification.As(scoreRecorder.score[i]))score.Add("A#");
+                else if(NoteNameIdentification.B(scoreRecorder.score[i]))score.Add("B");
+                else score.Add("null");
             }
         } 
     }
@@ -1060,57 +1087,140 @@ public class CodesCheck : MonoBehaviour
             // 一小節分のスコアを格納するList
             List<string> scoreOfBar = new List<string>();
 
-            // 最大合致率を格納する変数
-            float maxConformance = 0;
-
-            // 最大合致率のコードを格納するList <--------------------stringからListに変更予定
-            List<List<string>> maxConformanceCodes = new List<List<string>>();
-
             // 一小節分のスコアを格納
             for(int j = 0; j < 16; j++)
             {
                 scoreOfBar.Add(score[16 * i + j]);
             }
-            
-            //すべてのコードをチェック
-            foreach(List<string> code in codes)
-            {
-                conformanceCheck.Add(CheckCodeConformance(scoreOfBar,code));
-                if(CheckCodeConformance(scoreOfBar,code) > maxConformance)
-                {
-                    
-                    maxConformance = CheckCodeConformance(scoreOfBar,code);
-                    maxConformanceCodes.Clear();
-                    maxConformanceCodes.Add(code);
-                }
-                else if(CheckCodeConformance(scoreOfBar,code) == maxConformance)
-                {
-                    maxConformanceCodes.Add(code);
-                }
-            }
 
-            if(i == 0) code1.AddRange(maxConformanceCodes[UnityEngine.Random.Range(0, maxConformanceCodes.Count)]);
-            else if(i == 1) code2.AddRange(maxConformanceCodes[UnityEngine.Random.Range(0, maxConformanceCodes.Count)]);
-            else if(i == 2) code3.AddRange(maxConformanceCodes[UnityEngine.Random.Range(0, maxConformanceCodes.Count)]);
-            else if(i == 3) code4.AddRange(maxConformanceCodes[UnityEngine.Random.Range(0, maxConformanceCodes.Count)]);
+            List<List<string>> codesOfBar = CheckCodeArea(scoreOfBar);
+
+            if(i == 0)code1 = CheckCodeConformance(scoreOfBar,codesOfBar);
+            else if(i == 1)code2 = CheckCodeConformance(scoreOfBar,codesOfBar);
+            else if(i == 2)code3 = CheckCodeConformance(scoreOfBar,codesOfBar);
+            else if(i == 3)code4 = CheckCodeConformance(scoreOfBar,codesOfBar);
         }
     }
 
-    float CheckCodeConformance(List<string> scoreOfBar, List<string> code)
+    List<string> CheckCodeConformance(List<string> scoreOfBar, List<List<string>> codes)
     {
-        int count = 0;
+        float maxConformance = 0;
+        List<List<string>> maxConformancecode = new List<List<string>>();
 
-        foreach (var note in scoreOfBar)
+        // コードの数だけ実行
+        for(int cds = 0; cds < codes.Count; cds++)
         {
-            if (code.Contains(note)) count++;
+            int count = 0;
+            float confoumance = 0;
+            
+            // 一小節分実行
+            for(int sb = 0; sb < scoreOfBar.Count; sb++)
+            {
+                // コードが保持する音数分実行
+                for(int cd = 0; cd < codes[cds].Count; cd++)
+                {
+                    if(codes[cds][cd] == scoreOfBar[sb])count++;
+                    //if(Regex.IsMatch(scoreOfBar[sb], Regex.Escape(codes[cds][cd])))count++; 
+                }
+            }
+            
+            if(codes[cds].Count != 0 && scoreOfBar.Count != 0)
+            {
+                // コードの１音あたりの合致率を計算
+                confoumance = (float)(count / codes[cds].Count) / scoreOfBar.Count;
+
+                if(confoumance > maxConformance)
+                {
+                    maxConformance = confoumance;
+                    maxConformancecode.Clear();
+                    maxConformancecode.Add(codes[cds]);
+                }
+                else if(confoumance == maxConformance)
+                {
+                    maxConformancecode.Add(codes[cds]);
+                }
+            }
         }
 
-        return (float)count / scoreOfBar.Count;
+        return maxConformancecode[UnityEngine.Random.Range(0, maxConformancecode.Count)];
+    }
+    
+    List<List<string>> CheckCodeArea(List<string> scoreOfBar)
+    {
+        int maxCount = 0;
+        List<string> noteName = new List<string>();
+        string frequentNote = "";
+
+        for(int n = 0; n < notes.Count; n++)
+        {
+            int count = 0;
+
+            for(int sb = 0; sb < scoreOfBar.Count; sb++)
+            {
+                if(notes[n] == scoreOfBar[sb])count++;
+                //if(Regex.IsMatch(scoreOfBar[sb], Regex.Escape(notes[n])))count++;
+            }
+
+            if(count > maxCount)
+            {
+                maxCount = count;
+                noteName.Clear();
+                noteName.Add(notes[n]);
+            }
+            else if(count == maxCount)
+            {
+                noteName.Add(notes[n]);
+            }
+        }
+        
+        frequentNote = noteName[UnityEngine.Random.Range(0, noteName.Count)];
+
+        switch(frequentNote)
+        {
+            case "C" :
+                return codesC;
+                break;
+            case "C#" :
+                return codesCs;
+                break;
+            case "D" :
+                return codesD;
+                break;
+            case "D#" :
+                return codesDs;
+                break;
+            case "E" :
+                return codesE;
+                break;
+            case "F" :
+                return codesF;
+                break;
+            case "F#" :
+                return codesFs;
+                break;
+            case "G" :
+                return codesG;
+                break;
+            case "G#" :
+                return codesGs;
+                break;
+            case "A" :
+                return codesA;
+                break;
+            case "A#" :
+                return codesAs;
+                break;
+            case "B" :
+                return codesB;
+                break;
+            default:
+                return codesC;
+                break;
+        }
     }
     
     void ResetCode()
     {
-        conformanceCheck.Clear();
         code1.Clear();
         code2.Clear();
         code3.Clear();
