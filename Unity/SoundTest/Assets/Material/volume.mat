@@ -73,8 +73,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _Volume: 0.03322332
-    - _VolumeThickness: 0.03189733
+    - _Volume: 0.045615453
+    - _VolumeThickness: 0.05438195
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

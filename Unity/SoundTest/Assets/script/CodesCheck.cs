@@ -9,6 +9,7 @@ public class CodesCheck : MonoBehaviour
     private bool scoreDataUpdate = false;
     private List<string> score = new List<string>();
     private int numberOfBars = 4;
+    public List<float> conformanceCheck = new List<float>();
     public List<string> code1 = new List<string>();
     public List<string> code2 = new List<string>();
     public List<string> code3 = new List<string>();
@@ -1074,8 +1075,10 @@ public class CodesCheck : MonoBehaviour
             //すべてのコードをチェック
             foreach(List<string> code in codes)
             {
+                conformanceCheck.Add(CheckCodeConformance(scoreOfBar,code));
                 if(CheckCodeConformance(scoreOfBar,code) > maxConformance)
                 {
+                    
                     maxConformance = CheckCodeConformance(scoreOfBar,code);
                     maxConformanceCodes.Clear();
                     maxConformanceCodes.Add(code);
@@ -1102,11 +1105,12 @@ public class CodesCheck : MonoBehaviour
             if (code.Contains(note)) count++;
         }
 
-        return (float)(count / scoreOfBar.Count);
+        return (float)count / scoreOfBar.Count;
     }
     
     void ResetCode()
     {
+        conformanceCheck.Clear();
         code1.Clear();
         code2.Clear();
         code3.Clear();
