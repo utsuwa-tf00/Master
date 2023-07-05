@@ -24,7 +24,7 @@ public class ScoreRecorder : MonoBehaviour
     private string resentNote = "";
     private int playCheckCount = 0;
     public float[] playTime = new float[16];
-    private float[] inputVolumes = new float[16];
+    public float[] inputVolumes = new float[16];
     private int maxPlayNumber = 0;
 
     // 再生用のスコア

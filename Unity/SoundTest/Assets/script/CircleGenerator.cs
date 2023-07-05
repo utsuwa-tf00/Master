@@ -86,46 +86,58 @@ public class CircleGenerator : MonoBehaviour
         {
             CircleController circleController = circles[i].GetComponent<CircleController>();
 
-            if(scoreRecorder.playCheck[i])
-            {
-                circleController.innerCircle = true;
-                circleController.note = scoreRecorder.nowMelodyNote; // 音階名を格納
+            currentX[i] = Mathf.Lerp(currentX[i], targetX[i], positionMoveSpeed * Time.deltaTime);
+            currentY[i] = Mathf.Lerp(currentY[i], targetY[i], positionMoveSpeed * Time.deltaTime);
+            currentCircleSize = Mathf.Lerp(currentCircleSize, targetCircleSize, circleSizeChangeSpeed * Time.deltaTime);
+            circlesTransform[i].sizeDelta = new Vector2(currentCircleSize, currentCircleSize);
+            circlesTransform[i].anchoredPosition = new Vector2(currentX[i], currentY[i]);
 
-                if(circleController.volume == 0 && !scoreRecorder.playCheck[i])
-                {
-                    if(audioData.loudness*scoreRecorder.volumeLeverage >= 1)circleController.volume = 1;
-                    else circleController.volume = audioData.loudness*scoreRecorder.volumeLeverage;
-
-                    targetX[i] = UnityEngine.Random.Range(0, 0);
-                    targetY[i] = UnityEngine.Random.Range(0, 0);
-                }
-
-                circleController.outerCircle = true;
-            }
-            else
-            {
-                circleController.innerCircle = false;
-                circleController.note = ""; // ノートを初期化
-                circleController.volume = 0;
-                circleController.outerCircle = false;
-            }
+            circleController.playTime = scoreRecorder.playTime[i];
+            circleController.mic = scoreRecorder.mic;
+            circleController.circle = scoreRecorder.playCheck[i];
             
             if(!scoreRecorder.mic)
             {
+                if(scoreRecorder.playCheck[i])
+                {
+                    circleController.innerCircle = true;
+                    
+
+                    if(circleController.volume == 0)
+                    {
+                        circleController.note = scoreRecorder.nowMelodyNote; // 音階名を格納
+                        circleController.volume = scoreRecorder.inputVolumes[i];
+
+                        angle[i] = Angle(scoreRecorder.nowMelodyNote);
+                        distance[i] = (screenHeight/18)*(1+NoteNameIdentification.Pitch(scoreRecorder.nowMelodyNote));
+
+                        targetX[i] = distance[i]*Mathf.Sin(angle[i]*Mathf.PI/180f);
+                        targetY[i] = distance[i]*Mathf.Cos(angle[i]*Mathf.PI/180f);
+
+                    }
+
+                    circleController.outerCircle = true;
+                }
+                else
+                {
+                    circleController.innerCircle = false;
+                    circleController.note = ""; // ノートを初期化
+                    circleController.volume = 0;
+                    circleController.outerCircle = false;
+                }
+
                 resetPosition = true;
                 
                 targetCircleSize = screenHeight/4;
 
                 circleController.targetVolumeCircle = 0.1f;
 
-                angle[i] = Angle(scoreRecorder.nowMelodyNote);
-                distance[i] = (screenHeight/18)*(1+NoteNameIdentification.Pitch(scoreRecorder.nowMelodyNote));
-
-                targetX[i] = distance[i]*Mathf.Sin(angle[i]*Mathf.PI/180f);
-                targetY[i] = distance[i]*Mathf.Cos(angle[i]*Mathf.PI/180f);
+                
             }
             else
             {
+                circleController.volume = scoreRecorder.inputVolumes[i];
+
                 if(resetPosition)
                 {
                     Array.Clear(targetX, 0, targetX.Length);
@@ -141,16 +153,6 @@ public class CircleGenerator : MonoBehaviour
                     targetY[i] = UnityEngine.Random.Range(-randomSize, randomSize);
                 }
             }
-            
-            currentX[i] = Mathf.Lerp(currentX[i], targetX[i], positionMoveSpeed * Time.deltaTime);
-            currentY[i] = Mathf.Lerp(currentY[i], targetY[i], positionMoveSpeed * Time.deltaTime);
-            currentCircleSize = Mathf.Lerp(currentCircleSize, targetCircleSize, circleSizeChangeSpeed * Time.deltaTime);
-            circlesTransform[i].sizeDelta = new Vector2(currentCircleSize, currentCircleSize);
-            circlesTransform[i].anchoredPosition = new Vector2(currentX[i], currentY[i]);
-
-            circleController.playTime = scoreRecorder.playTime[i];
-            circleController.mic = scoreRecorder.mic;
-            circleController.circle = scoreRecorder.playCheck[i];
         }
     }
 

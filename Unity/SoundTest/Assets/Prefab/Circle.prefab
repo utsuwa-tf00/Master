@@ -86,12 +86,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efae9f762b3b4030853c03f756a7461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioData: {fileID: 0}
   innerCircle: 0
   outerCircle: 0
+  circle: 0
+  mic: 0
   circleShader: {fileID: 4800000, guid: 1b3135af8a10048939f3714fce58cb65, type: 3}
   note: 
   playTime: 0
+  volume: 0
+  targetVolumeCircle: 0
   innerChangeSpeed: 20
   outerChangeSpeed: 10
   collarChangeSpeed: 50
