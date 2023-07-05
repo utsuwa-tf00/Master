@@ -8,7 +8,7 @@ public class GetAudioData : MonoBehaviour
     private bool isMicrophoneActive = true;
 
     private float[] prevSpectrum;
-    private const int SpectrumSize = 1024;
+    public const int SpectrumSize = 2048;
 
     private AudioSource audioSource; // Added AudioSource reference
 

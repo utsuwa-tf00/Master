@@ -1135,7 +1135,9 @@ public class CodesCheck : MonoBehaviour
                 }
             }
         }
-
+        
+        if(maxConformancecode.Count < 0)return maxConformancecode[0];
+        
         return maxConformancecode[UnityEngine.Random.Range(0, maxConformancecode.Count)];
     }
     

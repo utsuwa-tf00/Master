@@ -6,6 +6,8 @@ public class FrequencyToScaleConverter : MonoBehaviour
 
     private GetAudioData audioData; // Reference to the GetAudioData script
 
+    private float[] recentFreq = new float[256];
+
     void Start()
     {
         audioData = GetComponent<GetAudioData>(); // Get the GetAudioData script from the same GameObject
@@ -13,9 +15,29 @@ public class FrequencyToScaleConverter : MonoBehaviour
 
     void Update()
     {
-        float frequency = audioData.frequency; // Get the frequency from the GetAudioData script
+        for(int rf = 0; rf < recentFreq.Length; rf++)
+        {
+            if(rf < recentFreq.Length-1)
+            {
+                recentFreq[rf + 1] = recentFreq[rf];
+            }
+        }
 
-        scale = ConvertHertzToScale(frequency); // Convert frequency to scale (note name)
+        float frequency = audioData.frequency; // Get the frequency from the GetAudioData script
+        
+        recentFreq[0] = frequency;
+
+        float freqAverage = 0;
+        float sumFreq = 0;
+
+        for(int fa = 0; fa < recentFreq.Length; fa++)
+        {
+            sumFreq += recentFreq[fa];
+        }
+
+        freqAverage = sumFreq / 256;
+
+        scale = ConvertHertzToScale(freqAverage); // Convert frequency to scale (note name)
     }
 
     public static string ConvertHertzToScale(float hertz)
