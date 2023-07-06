@@ -39,7 +39,9 @@ public class VolumeVisualizer : MonoBehaviour
         else
         {
             if(scoreRecorder.nowMelodyVolume >= 1)targetVolume = 1;
+            else if(scoreRecorder.nowMelodyVolume == 0)targetVolume = currentVolume;
             else targetVolume = scoreRecorder.nowMelodyVolume;
+            
             currentVolume = Mathf.Lerp(currentVolume, targetVolume, volumeChangeSpeed * Time.deltaTime);
             thickness = Mathf.Lerp(thickness, targetVolume, thicknessChangeSpeed * Time.deltaTime);
             

@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class CircleController : MonoBehaviour
 {
-    public bool innerCircle = false; // 制御トグル
-    public bool outerCircle = false;
     public bool circle = false;
     public bool mic = false;
+    public bool playMode = false;
+    public bool recMode = false;
     public Shader circleShader; // シェーダーマテリアル
 
     public string note; // 音階名を格納する変数
@@ -15,23 +15,9 @@ public class CircleController : MonoBehaviour
     private RawImage rawImage; // RawImageコンポーネントの参照
     private Material circleMaterial; // マテリアルのインスタンス
 
-    //private float targetInnerCircle = 0.0f;
-    //private float currentInnerCircle = 0.0f;
-
     public float volume;
     public float targetVolumeCircle = 0.0f;
     private float currentVolumeCircle = 0.0f;
-
-    /*
-    private float targetOuter1Circle = 0.0f;
-    private float currentOuter1Circle = 0.0f;
-    private float targetOuter2Circle = 0.0f;
-    private float currentOuter2Circle = 0.0f;
-    private float targetOuter3Circle = 0.0f;
-    private float currentOuter3Circle = 0.0f;
-    private float targetOuter4Circle = 0.0f;
-    private float currentOuter4Circle = 0.0f;
-    */
 
     public float innerChangeSpeed = 100.0f;
     public float outerChangeSpeed = 100.0f;
@@ -80,59 +66,15 @@ public class CircleController : MonoBehaviour
                 preB = 0.1f + (0.9f * currentVolumeCircle);
             }
         }
-        /*
-        // innerCircleの値の設定
-        if (innerCircle)
-        {
-            //targetInnerCircle = 0.1f;
-            targetVolumeCircle = volume;
-        }
-        else
-        {
-            //targetInnerCircle = 0.0f;
-            targetVolumeCircle = 0.0f;
-        }
 
-        // outer1Circleの値の設定
-        if (outerCircle)
-        {
-            
-            targetOuter1Circle = 0.25f;
-            targetOuter2Circle = 0.35f;
-            targetOuter3Circle = 0.35f;
-            targetOuter4Circle = 0.45f;
-        }
-        else
-        {
-            
-            targetOuter1Circle = 0.0f;
-            targetOuter2Circle = 0.0f;
-            targetOuter3Circle = 0.0f;
-            targetOuter4Circle = 0.0f;
-        }
-        */
-
-        //currentInnerCircle = Mathf.Lerp(currentInnerCircle, targetInnerCircle, innerChangeSpeed * Time.deltaTime);
         currentVolumeCircle = Mathf.Lerp(currentVolumeCircle, targetVolumeCircle, innerChangeSpeed * Time.deltaTime);
-        /*
-        currentOuter1Circle = Mathf.Lerp(currentOuter1Circle, targetOuter1Circle, outerChangeSpeed * Time.deltaTime);
-        currentOuter2Circle = Mathf.Lerp(currentOuter2Circle, targetOuter2Circle, outerChangeSpeed * Time.deltaTime);
-        currentOuter3Circle = Mathf.Lerp(currentOuter3Circle, targetOuter3Circle, outerChangeSpeed * Time.deltaTime);
-        currentOuter4Circle = Mathf.Lerp(currentOuter4Circle, targetOuter4Circle, outerChangeSpeed * Time.deltaTime);
-        */
+
         colR = Mathf.Lerp(colR, preR, collarChangeSpeed * Time.deltaTime);
         colG = Mathf.Lerp(colG, preG, collarChangeSpeed * Time.deltaTime);
         colB = Mathf.Lerp(colB, preB, collarChangeSpeed * Time.deltaTime);
 
         rawImage.material.SetFloat("_PlayTime", playTime);
-        //rawImage.material.SetFloat("_InnerCircle", currentInnerCircle);
         rawImage.material.SetFloat("_Volume", currentVolumeCircle);
-        /*
-        rawImage.material.SetFloat("_Outer1Circle", currentOuter1Circle);
-        rawImage.material.SetFloat("_Outer2Circle", currentOuter2Circle);
-        rawImage.material.SetFloat("_Outer3Circle", currentOuter3Circle);
-        rawImage.material.SetFloat("_Outer4Circle", currentOuter4Circle);
-        */
         rawImage.material.SetFloat("_R", colR);
         rawImage.material.SetFloat("_G", colG);
         rawImage.material.SetFloat("_B", colB);

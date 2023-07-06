@@ -39,7 +39,7 @@ Material:
     - _Outer3Thickness: 0.05
     - _Outer4Circle: 0
     - _Outer4Thickness: 0.05
-    - _PlayTime: 0
+    - _PlayTime: 2
     - _R: 1
     - _Radius: 0
     - _Stencil: 0
@@ -49,7 +49,7 @@ Material:
     - _StencilWriteMask: 255
     - _Thickness: 0.01
     - _UseUIAlphaClip: 0
-    - _Volume: 0.5
+    - _Volume: 0
     - _VolumeThickness: 0.136
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

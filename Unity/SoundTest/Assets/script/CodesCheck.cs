@@ -1048,26 +1048,21 @@ public class CodesCheck : MonoBehaviour
     // スコアをscoreRecorderから取得、変換
     void GetScore()
     {
-       for(int i = 0; i < scoreRecorder.playTime.Length; i++)
+        for(int i = 0; i < scoreRecorder.melodyScore.Count; i++)
         {
-            if((int)scoreRecorder.playTime[i] == 0) break;
-
-            for(int j = 0; j < (int)scoreRecorder.playTime[i]; j++)
-            {
-                if(NoteNameIdentification.C(scoreRecorder.score[i]))score.Add("C");
-                else if(NoteNameIdentification.Cs(scoreRecorder.score[i]))score.Add("C#");
-                else if(NoteNameIdentification.D(scoreRecorder.score[i]))score.Add("D");
-                else if(NoteNameIdentification.Ds(scoreRecorder.score[i]))score.Add("D#");
-                else if(NoteNameIdentification.E(scoreRecorder.score[i]))score.Add("E");
-                else if(NoteNameIdentification.F(scoreRecorder.score[i]))score.Add("F");
-                else if(NoteNameIdentification.Fs(scoreRecorder.score[i]))score.Add("F#");
-                else if(NoteNameIdentification.G(scoreRecorder.score[i]))score.Add("G");
-                else if(NoteNameIdentification.Gs(scoreRecorder.score[i]))score.Add("G#");
-                else if(NoteNameIdentification.A(scoreRecorder.score[i]))score.Add("A");
-                else if(NoteNameIdentification.As(scoreRecorder.score[i]))score.Add("A#");
-                else if(NoteNameIdentification.B(scoreRecorder.score[i]))score.Add("B");
-                else score.Add("null");
-            }
+            if(NoteNameIdentification.C(scoreRecorder.melodyScore[i]))score.Add("C");
+            else if(NoteNameIdentification.Cs(scoreRecorder.melodyScore[i]))score.Add("C#");
+            else if(NoteNameIdentification.D(scoreRecorder.melodyScore[i]))score.Add("D");
+            else if(NoteNameIdentification.Ds(scoreRecorder.melodyScore[i]))score.Add("D#");
+            else if(NoteNameIdentification.E(scoreRecorder.melodyScore[i]))score.Add("E");
+            else if(NoteNameIdentification.F(scoreRecorder.melodyScore[i]))score.Add("F");
+            else if(NoteNameIdentification.Fs(scoreRecorder.melodyScore[i]))score.Add("F#");
+            else if(NoteNameIdentification.G(scoreRecorder.melodyScore[i]))score.Add("G");
+            else if(NoteNameIdentification.Gs(scoreRecorder.melodyScore[i]))score.Add("G#");
+            else if(NoteNameIdentification.A(scoreRecorder.melodyScore[i]))score.Add("A");
+            else if(NoteNameIdentification.As(scoreRecorder.melodyScore[i]))score.Add("A#");
+            else if(NoteNameIdentification.B(scoreRecorder.melodyScore[i]))score.Add("B");
+            else score.Add("");
         } 
     }
 
@@ -1085,9 +1080,9 @@ public class CodesCheck : MonoBehaviour
             List<string> scoreOfBar = new List<string>();
 
             // 一小節分のスコアを格納
-            for(int j = 0; j < 16; j++)
+            for(int j = 0; j < scoreRecorder.beat*4; j++)
             {
-                scoreOfBar.Add(score[16 * i + j]);
+                scoreOfBar.Add(score[scoreRecorder.beat*4 * i + j]);
             }
 
             List<List<string>> codesOfBar = CheckCodeArea(scoreOfBar);

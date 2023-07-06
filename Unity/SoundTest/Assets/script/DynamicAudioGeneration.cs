@@ -30,7 +30,8 @@ public class DynamicAudioGeneration : MonoBehaviour
         if (!scoreRecorder.mic)
         {
             isPlaying = true;
-            frequency = FrequencyLibrary.frequencyLibrary[scoreRecorder.nowMelodyNote];
+            if(scoreRecorder.nowMelodyNote == "")frequency = 0;
+            else frequency = FrequencyLibrary.frequencyLibrary[scoreRecorder.nowMelodyNote];
             volume = scoreRecorder.nowMelodyVolume;
         }
         else

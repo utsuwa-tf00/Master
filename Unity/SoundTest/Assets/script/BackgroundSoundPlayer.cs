@@ -43,7 +43,7 @@ public class BackgroundSoundPlayer : MonoBehaviour
                 }
             }
             
-            volume = 0.1f;
+            volume = 0.05f;
         }
         else
         {
