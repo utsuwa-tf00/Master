@@ -17,8 +17,10 @@ public class BackgroundSoundPlayer : MonoBehaviour
     private bool isPlaying = false;
 
     private float frequency;
+    private float preFrequency;
 
     public float volume;
+    public float preVolume;
 
 
     void Start()
@@ -28,7 +30,7 @@ public class BackgroundSoundPlayer : MonoBehaviour
     
     void Update()
     {
-        if (!scoreRecorder.mic)
+        if(scoreRecorder.isPlaying)
         {
             isPlaying = true;
             if(scoreRecorder.nowBackCode.Count == 5)
@@ -36,21 +38,18 @@ public class BackgroundSoundPlayer : MonoBehaviour
                 if(NoteNameIdentification.Back(scoreRecorder.nowBackCode[backgroundNumber]) != "")
                 {
                     frequency = FrequencyLibrary.frequencyLibrary[NoteNameIdentification.Back(scoreRecorder.nowBackCode[backgroundNumber])];
+                    preFrequency = frequency;
+                    preVolume = 0.05f;
                 }
                 else
                 {
-                    frequency = 0;
+                    frequency = preFrequency;
+                    preVolume = 0;
                 }
             }
-            
-            volume = 0.05f;
         }
-        else
-        {
-            frequency = 0;
-            volume = 0;
-            isPlaying = false;
-        }
+
+        volume = Mathf.Lerp(volume, preVolume, 0.01f);
     }
 
     void SineWave(float[] data, int channels)

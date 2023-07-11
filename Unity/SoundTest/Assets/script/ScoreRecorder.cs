@@ -9,8 +9,6 @@ public class ScoreRecorder : MonoBehaviour
 {
     public GetAudioData audioData; //GetAudioDataスクリプトの読み込み
     public CodesCheck codesCheck;
-    public AudioMixerGroup masterMixer; //音を出力するためのミキサーの読み込み
-    public AudioMixerGroup dummyMixer; //音を出力しないダミーのミキサーの読み込み
 
     public bool mic = false; //録音状態かそうでないかを切り替えるbool
     public float cutoffVol = 0.05f; //音の入力を開始する最低値
@@ -30,7 +28,9 @@ public class ScoreRecorder : MonoBehaviour
 
     // 再生用のスコア
     public List<string> melodyScore = new List<string>();
+    public List<string> playMelodyScore = new List<string>();
     public List<float> volumeScore = new List<float>();
+    public List<float> playVolumeScore = new List<float>();
     private List<List<string>> backScore = new List<List<string>>();
     public string nowMelodyNote = "";
     public float nowMelodyVolume = 0;
@@ -53,25 +53,11 @@ public class ScoreRecorder : MonoBehaviour
     private bool playStart = false;
     private bool recStart = false;
 
-    public void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-        SetMicInput();
+    private bool endlessPlayMode = true;
+    public bool isPlaying = false;
+    public bool loopStart = false;
 
-        coolTime = (60 / tempo) / 4;
-
-        numberOfSounds = numberOfBars * beat * 4;
-        
-        playCheck = new bool[numberOfSounds];
-
-        ResetAll();
-        recStart = true;
-    }
-
-    private void Update()
-    {
-        DataUpdate();
-    }
+    public int numberOfLoops = 0;
 
     //playCheckの処理----------------------------------------
     //playCheckをすべてfalseにする
@@ -102,7 +88,7 @@ public class ScoreRecorder : MonoBehaviour
     {
         for(int ns = 0; ns < numberOfSounds; ns++)
         {
-            if(audioData.loudness * volumeLeverage < cutoffVol)
+            if((audioData.loudness * volumeLeverage) < cutoffVol)
             {
                 melodyScore.Add("");
                 volumeScore.Add(0);
@@ -163,13 +149,15 @@ public class ScoreRecorder : MonoBehaviour
     //dataUpdate内のマイクの処理----------------------------------------
     private void MicOn()
     {
-        SetMicInput();
+        micAudioClip = Microphone.Start(null, true, 1, AudioSettings.outputSampleRate);
+        audioSource.clip = micAudioClip;
+        audioSource.Play();
         mic = true;
     }
 
     private void MicOff()
     {
-        DetachMic();
+        audioSource.clip = null;
         mic = false;
     }
 
@@ -178,20 +166,20 @@ public class ScoreRecorder : MonoBehaviour
     {
         micAudioClip = Microphone.Start(null, true, 1, AudioSettings.outputSampleRate);
         audioSource.clip = micAudioClip;
-        audioSource.outputAudioMixerGroup = dummyMixer; // Set the output to the dummy AudioMixer
+        //audioSource.outputAudioMixerGroup = dummyMixer; // Set the output to the dummy AudioMixer
         audioSource.Play();
     }
 
     private void DetachMic()
     {
         audioSource.clip = null;
-        audioSource.outputAudioMixerGroup = masterMixer; // Set the output to the master AudioMixer
+        //audioSource.outputAudioMixerGroup = masterMixer; // Set the output to the master AudioMixer
     }
 
     //モードごとの処理----------------------------------------
     private void RecMode()
     {
-        if(recStart && audioData.loudness > cutoffVol)
+        if(recStart && (audioData.loudness * volumeLeverage) > cutoffVol)
         {
             StartCoroutine(ProsesInRecMode());
             recStart = false;
@@ -213,6 +201,152 @@ public class ScoreRecorder : MonoBehaviour
         ResetScores();
     }
 
+    // EndlessPlayModeの処理----------------------------------------
+    private void EndlessPlayMode()
+    {
+        if(endlessPlayMode && (audioData.loudness * volumeLeverage) > cutoffVol)
+        {
+            StartCoroutine(FirstRecMode());
+            endlessPlayMode = false;
+        }
+    }
+
+    private IEnumerator FirstRecMode()
+    {
+        // 録音用のリストにデータを追加
+        for(int ns = 0; ns < numberOfSounds; ns++)
+        {
+            if((audioData.loudness * volumeLeverage) < cutoffVol)
+            {
+                melodyScore.Add("");
+                volumeScore.Add(0);
+            }
+            else
+            {
+                // 録音用のリストに追加
+                melodyScore.Add(FrequencyToScaleConverter.ConvertHertzToScale(audioData.frequency));
+
+                float vol = 0;
+                vol = audioData.loudness * volumeLeverage;
+                if(vol < 1)volumeScore.Add(vol);
+                else volumeScore.Add(1);
+            }
+
+            yield return new WaitForSecondsRealtime(coolTime);
+        }
+        
+        if(melodyScore.Count == numberOfSounds)
+        {
+            numberOfLoops++;
+
+             // playMelodyScoreとplayVolumeScoreをクリア
+            playMelodyScore.Clear();
+            playVolumeScore.Clear();
+
+            // playMelodyScoreとplayVolumeScoreに参照を代入
+            for(int ms = 0; ms < melodyScore.Count; ms++)
+            {
+                playMelodyScore.Add(melodyScore[ms]);
+                playVolumeScore.Add(volumeScore[ms]);
+            }
+
+            // 録音用のリストをクリア
+            melodyScore.Clear();
+            volumeScore.Clear();
+
+            isPlaying = true;
+            loopStart = true;
+
+            // コルーチンのループを開始
+            StartCoroutine(ProsesInEndlessPlayMode());
+        }
+    }
+
+    private IEnumerator ProsesInEndlessPlayMode()
+    {
+        // playCheck用のカウント
+        //int count = 0;
+
+        for(int ns = 0; ns < numberOfSounds; ns++)
+        {
+            // 録音用のリストにデータを追加
+            if((audioData.loudness * volumeLeverage) < cutoffVol)
+            {
+                melodyScore.Add("");
+                volumeScore.Add(0);
+            }
+            else
+            {
+                melodyScore.Add(FrequencyToScaleConverter.ConvertHertzToScale(audioData.frequency));
+
+                float vol = 0;
+                vol = audioData.loudness * volumeLeverage;
+                if(vol < 1)volumeScore.Add(vol);
+                else volumeScore.Add(1);
+            }
+
+            // 現在再生中の音を再生用のリストから取得
+            nowMelodyNote = playMelodyScore[ns];
+            nowMelodyVolume = playVolumeScore[ns];
+            
+            if (codesCheck.backScore.Count > 0)
+            {
+                int backScoreIndex = Mathf.FloorToInt(ns / (beat * 4));
+                if (backScoreIndex < codesCheck.backScore.Count)
+                {
+                    nowBackCode = codesCheck.backScore[backScoreIndex];
+                    
+                    if (nowBackCode.Count < 5)
+                    {
+                        while (nowBackCode.Count < 5)
+                        {
+                            nowBackCode.Add("");
+                        }
+                    }
+                }
+            }
+
+            // playCheckの更新
+            /*
+            if(resentNote != nowMelodyNote)
+            {
+                playCheck[count] = true;
+                count++;
+
+                resentNote = nowMelodyNote;
+            }
+            */
+
+            yield return new WaitForSecondsRealtime(coolTime);
+        }
+        
+        if(melodyScore.Count == numberOfSounds)
+        {
+            numberOfLoops++;
+            
+             // playMelodyScoreとplayVolumeScoreをクリア
+            playMelodyScore.Clear();
+            playVolumeScore.Clear();
+
+            for(int ms = 0; ms < melodyScore.Count; ms++)
+            {
+                playMelodyScore.Add(melodyScore[ms]);
+                playVolumeScore.Add(volumeScore[ms]);
+            }
+
+            // 録音用のリストをクリア
+            melodyScore.Clear();
+            volumeScore.Clear();
+        }
+
+        // playCheckのリセット
+        //playCheck = new bool[numberOfSounds];
+
+        loopStart = true;
+
+        StartCoroutine(ProsesInEndlessPlayMode());
+    }
+
     //データの更新を行う----------------------------------------
     private void DataUpdate()
     {
@@ -226,5 +360,28 @@ public class ScoreRecorder : MonoBehaviour
         {
             PlayMode();
         }
+    }
+
+    public void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        SetMicInput();
+
+        coolTime = (60 / tempo) / 4;
+
+        numberOfSounds = numberOfBars * beat * 4;
+        
+        playCheck = new bool[numberOfSounds];
+
+        ResetAll();
+        recStart = true;
+
+        mic = true;
+    }
+
+    private void Update()
+    {
+        //DataUpdate();
+        EndlessPlayMode();
     }
 }

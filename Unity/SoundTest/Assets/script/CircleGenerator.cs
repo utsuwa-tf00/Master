@@ -90,6 +90,8 @@ public class CircleGenerator : MonoBehaviour
         {
             for(int micOn = 0; micOn < (scoreRecorder.numberOfBars * scoreRecorder.beat * 4); micOn++)
             {
+                if(scoreRecorder.volumeScore.Count == 0)circleController[micOn].volume = 0;
+                
                 if(circleController[micOn].recMode)
                 {
                     targetX[micOn] = 0;

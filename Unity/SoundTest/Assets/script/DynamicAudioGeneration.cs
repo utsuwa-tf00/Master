@@ -16,6 +16,7 @@ public class DynamicAudioGeneration : MonoBehaviour
     private bool isPlaying = false;
 
     private float frequency;
+    private float preFrequency;
 
     public float volume;
 
@@ -27,18 +28,20 @@ public class DynamicAudioGeneration : MonoBehaviour
     
     void Update()
     {
-        if (!scoreRecorder.mic)
+        if(scoreRecorder.isPlaying)
         {
             isPlaying = true;
-            if(scoreRecorder.nowMelodyNote == "")frequency = 0;
-            else frequency = FrequencyLibrary.frequencyLibrary[scoreRecorder.nowMelodyNote];
-            volume = scoreRecorder.nowMelodyVolume;
-        }
-        else
-        {
-            frequency = 0;
-            volume = 0;
-            isPlaying = false;
+            if(scoreRecorder.nowMelodyNote == "")
+            {
+                frequency = preFrequency;
+                volume = Mathf.Lerp(volume, 0, 0.1f);
+            }
+            else 
+            {
+                frequency = FrequencyLibrary.frequencyLibrary[scoreRecorder.nowMelodyNote];
+                preFrequency = frequency;
+                volume = scoreRecorder.cutoffVol + scoreRecorder.nowMelodyVolume/5;
+            }
         }
     }
 

@@ -8,12 +8,12 @@ public class CodesCheck : MonoBehaviour
 {
     public ScoreRecorder scoreRecorder;
     private bool scoreDataUpdate = false;
-    private List<string> score = new List<string>();
+    public List<string> score = new List<string>();
     private int numberOfBars = 4;
     private List<string> notes = new List<string>(){"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
     public List<List<string>> backScore = new List<List<string>>();
     
-    private List<List<string>> codes = new List<List<string>>();
+    private List<List<string>> codesNull = new List<List<string>>();
 
     private List<List<string>> codesC = new List<List<string>>();
     private List<List<string>> codesCs = new List<List<string>>();
@@ -27,6 +27,8 @@ public class CodesCheck : MonoBehaviour
     private List<List<string>> codesA = new List<List<string>>();
     private List<List<string>> codesAs = new List<List<string>>();
     private List<List<string>> codesB = new List<List<string>>();
+
+    private List<string> codeNull = new List<string>();
 
     // codeC --------------------------------------------------------------------------------
     private List<string> codeC = new List<string>();
@@ -584,6 +586,8 @@ public class CodesCheck : MonoBehaviour
     // Start内でListに音名を設定
     void InputCodeInStart()
     {
+        codesNull.Add(codeNull);
+        
         InputCode(codeC, "C", "default");
         InputCode(codeCm, "C", "m");
         InputCode(codeCaug, "C", "aug");
@@ -1046,33 +1050,39 @@ public class CodesCheck : MonoBehaviour
     }
 
     // スコアをscoreRecorderから取得、変換
-    void GetScore()
+    public void GetScore()
     {
-        for(int i = 0; i < scoreRecorder.melodyScore.Count; i++)
+        ResetScore();
+
+        for(int i = 0; i < scoreRecorder.playMelodyScore.Count; i++)
         {
-            if(NoteNameIdentification.C(scoreRecorder.melodyScore[i]))score.Add("C");
-            else if(NoteNameIdentification.Cs(scoreRecorder.melodyScore[i]))score.Add("C#");
-            else if(NoteNameIdentification.D(scoreRecorder.melodyScore[i]))score.Add("D");
-            else if(NoteNameIdentification.Ds(scoreRecorder.melodyScore[i]))score.Add("D#");
-            else if(NoteNameIdentification.E(scoreRecorder.melodyScore[i]))score.Add("E");
-            else if(NoteNameIdentification.F(scoreRecorder.melodyScore[i]))score.Add("F");
-            else if(NoteNameIdentification.Fs(scoreRecorder.melodyScore[i]))score.Add("F#");
-            else if(NoteNameIdentification.G(scoreRecorder.melodyScore[i]))score.Add("G");
-            else if(NoteNameIdentification.Gs(scoreRecorder.melodyScore[i]))score.Add("G#");
-            else if(NoteNameIdentification.A(scoreRecorder.melodyScore[i]))score.Add("A");
-            else if(NoteNameIdentification.As(scoreRecorder.melodyScore[i]))score.Add("A#");
-            else if(NoteNameIdentification.B(scoreRecorder.melodyScore[i]))score.Add("B");
+            if(NoteNameIdentification.C(scoreRecorder.playMelodyScore[i]))score.Add("C");
+            else if(NoteNameIdentification.Cs(scoreRecorder.playMelodyScore[i]))score.Add("C#");
+            else if(NoteNameIdentification.D(scoreRecorder.playMelodyScore[i]))score.Add("D");
+            else if(NoteNameIdentification.Ds(scoreRecorder.playMelodyScore[i]))score.Add("D#");
+            else if(NoteNameIdentification.E(scoreRecorder.playMelodyScore[i]))score.Add("E");
+            else if(NoteNameIdentification.F(scoreRecorder.playMelodyScore[i]))score.Add("F");
+            else if(NoteNameIdentification.Fs(scoreRecorder.playMelodyScore[i]))score.Add("F#");
+            else if(NoteNameIdentification.G(scoreRecorder.playMelodyScore[i]))score.Add("G");
+            else if(NoteNameIdentification.Gs(scoreRecorder.playMelodyScore[i]))score.Add("G#");
+            else if(NoteNameIdentification.A(scoreRecorder.playMelodyScore[i]))score.Add("A");
+            else if(NoteNameIdentification.As(scoreRecorder.playMelodyScore[i]))score.Add("A#");
+            else if(NoteNameIdentification.B(scoreRecorder.playMelodyScore[i]))score.Add("B");
             else score.Add("");
         } 
     }
 
-    void ResetScore()
+    public void ResetScore()
     {
         score = new List<string>();
     }
 
-    void GetCode()
+    public IEnumerator GetCode()
     {
+        ResetCode();
+        
+        if(score.Count < scoreRecorder.beat * scoreRecorder.numberOfBars * 4)yield break;
+        
         // 小節数分実行
         for(int i = 0; i < numberOfBars; i++)
         {
@@ -1087,7 +1097,8 @@ public class CodesCheck : MonoBehaviour
 
             List<List<string>> codesOfBar = CheckCodeArea(scoreOfBar);
 
-            backScore.Add(CheckCodeConformance(scoreOfBar,codesOfBar));
+            if(codesOfBar == codesNull)backScore.Add(codesNull[0]);
+            else backScore.Add(CheckCodeConformance(scoreOfBar,codesOfBar));
         }
     }
 
@@ -1131,7 +1142,7 @@ public class CodesCheck : MonoBehaviour
             }
         }
         
-        if(maxConformancecode.Count < 0)return maxConformancecode[0];
+        if(codes[0] == codeNull)return codeNull;
         
         return maxConformancecode[UnityEngine.Random.Range(0, maxConformancecode.Count)];
     }
@@ -1141,6 +1152,7 @@ public class CodesCheck : MonoBehaviour
         int maxCount = 0;
         List<string> noteName = new List<string>();
         string frequentNote = "";
+        int nullCount = 0;
 
         for(int n = 0; n < notes.Count; n++)
         {
@@ -1164,7 +1176,19 @@ public class CodesCheck : MonoBehaviour
             }
         }
         
-        frequentNote = noteName[UnityEngine.Random.Range(0, noteName.Count)];
+        for(int nc = 0; nc < scoreOfBar.Count; nc++)
+        {
+            if(scoreOfBar[nc] == "")nullCount++;
+        }
+
+        if(nullCount > (scoreOfBar.Count/4)*3)
+        {
+            return codesNull;
+        }
+        else
+        {
+            frequentNote = noteName[UnityEngine.Random.Range(0, noteName.Count)];
+        }
 
         switch(frequentNote)
         {
@@ -1205,12 +1229,12 @@ public class CodesCheck : MonoBehaviour
                 return codesB;
                 break;
             default:
-                return codesC;
+                return codesNull;
                 break;
         }
     }
     
-    void ResetCode()
+    public void ResetCode()
     {
         backScore.Clear();
     }
@@ -1228,6 +1252,7 @@ public class CodesCheck : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if(!scoreRecorder.mic)
         {
             if(scoreDataUpdate)
@@ -1246,6 +1271,16 @@ public class CodesCheck : MonoBehaviour
                 scoreDataUpdate = true;
             }
         }
-
+        */
+        
+        if(scoreRecorder.isPlaying)
+        {
+            if(scoreRecorder.loopStart)
+            {
+                GetScore();
+                StartCoroutine(GetCode());
+                scoreRecorder.loopStart = false;
+            }
+        }
     }
 }
